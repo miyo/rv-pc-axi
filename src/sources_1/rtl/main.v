@@ -11,12 +11,17 @@ module m_main(
               input  wire        CLK,
               input  wire        w_rxd,
               output wire        w_txd,
+`ifndef ARTYA7
               output wire [15:0] w_led,
               output reg   [7:0] r_sg,
               output reg   [7:0] r_an,
+`else
+              output wire  [3:0] w_ledx,
+`endif
               output wire        w_led1_B,
               output wire        w_led1_G,
               output wire        w_led1_R,
+`ifndef ARTYA7
               inout  wire [15:0] ddr2_dq,    ///// for DRAM
               inout  wire  [1:0] ddr2_dqs_n, //
               inout  wire  [1:0] ddr2_dqs_p, //
@@ -25,12 +30,29 @@ module m_main(
               output wire        ddr2_ras_n, //
               output wire        ddr2_cas_n, //
               output wire        ddr2_we_n,  //
-              output wire        ddr2_ck_p,  //
+              output wire        ddr2_ck_p,  // 
               output wire        ddr2_ck_n,  //
               output wire        ddr2_cke,   //
               output wire        ddr2_cs_n,  //
               output wire  [1:0] ddr2_dm,    //
               output wire        ddr2_odt,   //
+`else // ARTYA7
+              inout  wire [15:0] ddr3_dq,    ///// for DRAM
+              inout  wire  [1:0] ddr3_dqs_n, //
+              inout  wire  [1:0] ddr3_dqs_p, //
+              output wire [13:0] ddr3_addr,  //
+              output wire  [2:0] ddr3_ba,    //
+              output wire        ddr3_ras_n, //
+              output wire        ddr3_cas_n, //
+              output wire        ddr3_we_n,  //
+              output wire  [0:0] ddr3_ck_p,  // 
+              output wire  [0:0] ddr3_ck_n,  //
+              output wire        ddr3_reset_n, //
+              output wire  [0:0] ddr3_cke,   //
+              output wire  [0:0] ddr3_cs_n,  //
+              output wire  [1:0] ddr3_dm,    //
+              output wire  [0:0] ddr3_odt,   //
+`endif
               input  wire        w_btnu,
               input  wire        w_btnd,
               input  wire        w_btnl,
@@ -68,6 +90,13 @@ module m_main(
     wire RST_X_IN = 1;
     wire [15:0] w_sw = 0;
 
+`ifdef ARTYA7
+    wire [15:0] w_led;
+    assign w_ledx = w_led[3:0];//w_insn_data[3:0];
+
+    reg [7:0] r_sg;
+    reg [7:0] r_an;
+`endif
 
     wire [15:0] w_led_t; // temporal w_led
 
@@ -110,8 +139,13 @@ module m_main(
 
     // Clock
     wire CORE_CLK, w_locked;
+`ifndef ARTYA7
     wire mig_clk, RST_X2;
     clk_wiz_0 m_clkgen0 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(mig_clk), .locked(w_locked));
+`else
+    wire mig_clk, RST_X2, ref_clk;
+    clk_wiz_0 m_clkgen0 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(), .clk_out2(ref_clk), .clk_out3(mig_clk), .locked(w_locked));
+`endif
 
     // 50MHz Clock for SD card and Ethernet
     wire clk_50mhz, w_locked_50mhz;
@@ -255,6 +289,7 @@ module m_main(
         .mig_clk        (mig_clk),
         .mig_rst_x      (!RST),
         // memory interface ports
+`ifndef ARTYA7
         .ddr2_dq        (ddr2_dq),
         .ddr2_dqs_n     (ddr2_dqs_n),
         .ddr2_dqs_p     (ddr2_dqs_p),
@@ -269,6 +304,23 @@ module m_main(
         .ddr2_cs_n      (ddr2_cs_n),
         .ddr2_dm        (ddr2_dm),
         .ddr2_odt       (ddr2_odt),
+`else
+        .ddr3_dq        (ddr3_dq),
+        .ddr3_dqs_n     (ddr3_dqs_n),
+        .ddr3_dqs_p     (ddr3_dqs_p),
+        .ddr3_addr      (ddr3_addr),
+        .ddr3_ba        (ddr3_ba),
+        .ddr3_ras_n     (ddr3_ras_n),
+        .ddr3_cas_n     (ddr3_cas_n),
+        .ddr3_we_n      (ddr3_we_n),
+        .ddr3_ck_p      (ddr3_ck_p),
+        .ddr3_ck_n      (ddr3_ck_n),
+        .ddr3_reset_n   (ddr3_reset_n),
+        .ddr3_cke       (ddr3_cke),
+        .ddr3_cs_n      (ddr3_cs_n),
+        .ddr3_dm        (ddr3_dm),
+        .ddr3_odt       (ddr3_odt),
+`endif
         // output clk, rst (active-low)
         .o_clk          (CORE_CLK),
         .o_rst_x        (RST_X2),

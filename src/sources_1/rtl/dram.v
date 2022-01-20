@@ -9,12 +9,21 @@
 /**************************************************************************************************/
 /*** For Nexys A7 board ***************************************************************************/
 module DRAM_con_witout_cache #(
+`ifndef ARTYA7
               parameter DDR2_DQ_WIDTH   = 16,
               parameter DDR2_DQS_WIDTH  = 2,
               parameter DDR2_ADDR_WIDTH = 13,
               parameter DDR2_BA_WIDTH   = 3,
               parameter DDR2_DM_WIDTH   = 2,
               parameter APP_ADDR_WIDTH  = 27,
+`else
+              parameter DDR3_DQ_WIDTH   = 16,
+              parameter DDR3_DQS_WIDTH  = 2,
+              parameter DDR3_ADDR_WIDTH = 14,
+              parameter DDR3_BA_WIDTH   = 3,
+              parameter DDR3_DM_WIDTH   = 2,
+              parameter APP_ADDR_WIDTH  = 28,
+`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -22,7 +31,11 @@ module DRAM_con_witout_cache #(
      // input clk, rst (active-low)
      input  wire                         mig_clk,
      input  wire                         mig_rst_x,
+`ifdef ARTYA7
+     input  wire                         ref_clk,
+`endif
      // memory interface ports
+`ifndef ARTYA7
      inout  wire [DDR2_DQ_WIDTH-1 : 0]   ddr2_dq,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_n,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_p,
@@ -37,6 +50,23 @@ module DRAM_con_witout_cache #(
      output wire [0:0]                   ddr2_cs_n,
      output wire [DDR2_DM_WIDTH-1 : 0]   ddr2_dm,
      output wire [0:0]                   ddr2_odt,
+`else
+     inout  wire [DDR3_DQ_WIDTH-1 : 0]   ddr3_dq,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_n,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_p,
+     output wire [DDR3_ADDR_WIDTH-1 : 0] ddr3_addr,
+     output wire [DDR3_BA_WIDTH-1 : 0]   ddr3_ba,
+     output wire                         ddr3_ras_n,
+     output wire                         ddr3_cas_n,
+     output wire                         ddr3_we_n,
+     output wire [0:0]                   ddr3_ck_p,
+     output wire [0:0]                   ddr3_ck_n,
+     output wire                         ddr3_reset_n,
+     output wire [0:0]                   ddr3_cke,
+     output wire [0:0]                   ddr3_cs_n,
+     output wire [DDR3_DM_WIDTH-1 : 0]   ddr3_dm,
+     output wire [0:0]                   ddr3_odt,
+`endif
      // output clk, rst (active-low)
      output wire                         o_clk,
      output wire                         o_rst_x,
@@ -171,15 +201,31 @@ module DRAM_con_witout_cache #(
     assign {dout_afifo1_wr_en, dout_afifo1_addr, dout_afifo1_data, data_mask} = dout_afifo1;
     assign dram_ren = (!empty_afifo1 && !dout_afifo1_wr_en && dram_ready);
     assign dram_wen = (!empty_afifo1 && dout_afifo1_wr_en && dram_ready && dram_wdf_ready);
+`ifndef ARTYA7
     assign dram_addr = dout_afifo1_addr[26:1];
     assign dram_din = {{(APP_DATA_WIDTH-32){1'b0}}, dout_afifo1_data};
+`else
+    assign dram_addr = {2'b0, dout_afifo1_addr[26:4], 3'b0};
+    assign dram_din = {4{dout_afifo1_data}};
 
-    DRAMController #(
+    wire  [3:0] mask_t = ~data_mask;
+    wire [15:0] mask_t2 = mask_t << {dout_afifo1_addr[3:2], 2'b0};
+`endif
+
+    DRAMController_AXI #(
+`ifndef ARTYA7
                      .DDR2_DQ_WIDTH(DDR2_DQ_WIDTH),
                      .DDR2_DQS_WIDTH(DDR2_DQS_WIDTH),
                      .DDR2_ADDR_WIDTH(DDR2_ADDR_WIDTH),
                      .DDR2_BA_WIDTH(DDR2_BA_WIDTH),
                      .DDR2_DM_WIDTH(DDR2_DM_WIDTH),
+`else
+                     .DDR3_DQ_WIDTH(DDR3_DQ_WIDTH),
+                     .DDR3_DQS_WIDTH(DDR3_DQS_WIDTH),
+                     .DDR3_ADDR_WIDTH(DDR3_ADDR_WIDTH),
+                     .DDR3_BA_WIDTH(DDR3_BA_WIDTH),
+                     .DDR3_DM_WIDTH(DDR3_DM_WIDTH),
+`endif
                      .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
                      .APP_CMD_WIDTH(APP_CMD_WIDTH),
                      .APP_DATA_WIDTH(APP_DATA_WIDTH),
@@ -188,7 +234,11 @@ module DRAM_con_witout_cache #(
         // input clk, rst (active-low)
         .sys_clk(mig_clk),
         .sys_rst_x(mig_rst_x),
+`ifdef ARTYA7
+        .ref_clk(ref_clk),
+`endif
         // memory interface ports
+`ifndef ARTYA7
         .ddr2_dq(ddr2_dq),
         .ddr2_dqs_n(ddr2_dqs_n),
         .ddr2_dqs_p(ddr2_dqs_p),
@@ -203,20 +253,45 @@ module DRAM_con_witout_cache #(
         .ddr2_cs_n(ddr2_cs_n),
         .ddr2_dm(ddr2_dm),
         .ddr2_odt(ddr2_odt),
+`else
+        .ddr3_dq(ddr3_dq),
+        .ddr3_dqs_n(ddr3_dqs_n),
+        .ddr3_dqs_p(ddr3_dqs_p),
+        .ddr3_addr(ddr3_addr),
+        .ddr3_ba(ddr3_ba),
+        .ddr3_ras_n(ddr3_ras_n),
+        .ddr3_cas_n(ddr3_cas_n),
+        .ddr3_we_n(ddr3_we_n),
+        .ddr3_ck_p(ddr3_ck_p),
+        .ddr3_ck_n(ddr3_ck_n),
+        .ddr3_reset_n(ddr3_reset_n),
+        .ddr3_cke(ddr3_cke),
+        .ddr3_cs_n(ddr3_cs_n),
+        .ddr3_dm(ddr3_dm),
+        .ddr3_odt(ddr3_odt),
+`endif
         // output clk, rst (active-low)
         .o_clk(mig_ui_clk),
         .o_rst_x(mig_ui_rst_x),
         // user interface ports
         .i_rd_en(dram_ren),
         .i_wr_en(dram_wen),
+`ifndef ARTYA7
         .i_addr({1'b0, dram_addr}),
+`else
+        .i_addr(dram_addr),
+`endif
         .i_data(dram_din),
         .o_init_calib_complete(dram_init_calib_complete),
         .o_data(dram_dout),
         .o_data_valid(dram_dout_valid),
         .o_ready(dram_ready),
         .o_wdf_ready(dram_wdf_ready),
+`ifndef ARTYA7
         .i_mask(data_mask));
+`else
+        .i_mask(~mask_t2));
+`endif
 
     // state machine
     always @(negedge clk) begin

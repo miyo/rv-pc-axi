@@ -33,6 +33,7 @@ module m_mmu(
     output wire         w_init_done,
     input  wire         mig_clk,
     input  wire         mig_rst_x,
+`ifndef ARTYA7
     inout  wire [15:0]  ddr2_dq,
     inout  wire  [1:0]  ddr2_dqs_n,
     inout  wire  [1:0]  ddr2_dqs_p,
@@ -47,6 +48,24 @@ module m_mmu(
     output wire         ddr2_cs_n,
     output wire  [1:0]  ddr2_dm,
     output wire         ddr2_odt,
+`else // ARTYA7
+    input  wire         ref_clk,
+    inout  wire [15:0]  ddr3_dq,
+    inout  wire  [1:0]  ddr3_dqs_n,
+    inout  wire  [1:0]  ddr3_dqs_p,
+    output wire [13:0]  ddr3_addr,
+    output wire  [2:0]  ddr3_ba,
+    output wire         ddr3_ras_n,
+    output wire         ddr3_cas_n,
+    output wire         ddr3_we_n,
+    output wire         ddr3_ck_p,
+    output wire         ddr3_ck_n,
+    output wire         ddr3_reset_n,
+    output wire         ddr3_cke,
+    output wire         ddr3_cs_n,
+    output wire  [1:0]  ddr3_dm,
+    output wire         ddr3_odt,
+`endif
     output wire         o_clk,
     output wire         o_rst_x,
     output wire  [7:0]  w_uart_data,
@@ -1074,7 +1093,11 @@ module m_mmu(
                                // input clk, rst (active-low)
                                .mig_clk(mig_clk),
                                .mig_rst_x(mig_rst_x),
+`ifdef ARTYA7
+                               .ref_clk(ref_clk),
+`endif
                                // memory interface ports
+`ifndef ARTYA7
                                .ddr2_dq(ddr2_dq),
                                .ddr2_dqs_n(ddr2_dqs_n),
                                .ddr2_dqs_p(ddr2_dqs_p),
@@ -1089,6 +1112,23 @@ module m_mmu(
                                .ddr2_cs_n(ddr2_cs_n),
                                .ddr2_dm(ddr2_dm),
                                .ddr2_odt(ddr2_odt),
+`else
+                               .ddr3_dq(ddr3_dq),
+                               .ddr3_dqs_n(ddr3_dqs_n),
+                               .ddr3_dqs_p(ddr3_dqs_p),
+                               .ddr3_addr(ddr3_addr),
+                               .ddr3_ba(ddr3_ba),
+                               .ddr3_ras_n(ddr3_ras_n),
+                               .ddr3_cas_n(ddr3_cas_n),
+                               .ddr3_we_n(ddr3_we_n),
+                               .ddr3_ck_p(ddr3_ck_p),
+                               .ddr3_ck_n(ddr3_ck_n),
+                               .ddr3_reset_n(ddr3_reset_n),
+                               .ddr3_cke(ddr3_cke),
+                               .ddr3_cs_n(ddr3_cs_n),
+                               .ddr3_dm(ddr3_dm),
+                               .ddr3_odt(ddr3_odt),
+`endif
                                // output clk, rst (active-low)
                                .o_clk(o_clk),
                                .o_rst_x(o_rst_x),
