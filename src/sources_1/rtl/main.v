@@ -305,6 +305,7 @@ module m_main(
         .ddr2_dm        (ddr2_dm),
         .ddr2_odt       (ddr2_odt),
 `else
+	.ref_clk        (ref_clk),
         .ddr3_dq        (ddr3_dq),
         .ddr3_dqs_n     (ddr3_dqs_n),
         .ddr3_dqs_p     (ddr3_dqs_p),
