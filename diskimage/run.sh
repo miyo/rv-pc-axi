@@ -1,6 +1,8 @@
 #!/bin/sh
 
+if [ -z "$PREFIX" ]; then
 PREFIX="/opt/riscv/bin/"
+fi
 
 # How to build Berkeley Boot Loader and RISC-V Linux kernel
 
@@ -33,7 +35,9 @@ cp riscv-pk-1.0.0/build/bbl.bin .
 # How to build Buildroot disk image
 
 # (1) File download and unzip the downloaded file
-wget https://git.busybox.net/buildroot/snapshot/buildroot-2019.11.3.tar.gz
+#wget https://git.busybox.net/buildroot/snapshot/buildroot-2019.11.3.tar.gz
+wget https://buildroot.org/downloads/buildroot-2019.11.3.tar.gz
+
 tar -zxvf buildroot-2019.11.3.tar.gz
 
 # (2) Create and fix a configuration file
