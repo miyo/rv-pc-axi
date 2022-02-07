@@ -87,6 +87,9 @@ module m_main(
 `endif
               );
 
+    // Clock
+    wire CORE_CLK, w_locked;
+
     wire RST_X_IN = 1;
     wire [15:0] w_sw = 0;
 
@@ -105,12 +108,6 @@ module m_main(
     reg        r_time_led=0;
     always@(posedge CORE_CLK) r_cnt <= (r_cnt>=(64*1000000/2-1)) ? 0 : r_cnt+1;
     always@(posedge CORE_CLK) r_time_led <= (r_cnt==0) ? !r_time_led : r_time_led;
-
-    assign w_led[0] = r_time_led;
-    assign w_led[1] = w_init_done;
-    assign w_led[2] = w_data_we;
-    assign w_led[3] = w_busy;
-    assign w_led[15:4] = 0;
 
     /*******************************************************************************/
     reg         r_stop = 0;
@@ -137,8 +134,6 @@ module m_main(
     wire        w_init_done;
     wire        w_init_stage;
 
-    // Clock
-    wire CORE_CLK, w_locked;
 `ifndef ARTYA7
     wire mig_clk, RST_X2;
     clk_wiz_0 m_clkgen0 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(mig_clk), .locked(w_locked));
@@ -146,7 +141,6 @@ module m_main(
     wire mig_clk, RST_X2, ref_clk;
     clk_wiz_0 m_clkgen0 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(), .clk_out2(ref_clk), .clk_out3(mig_clk), .locked(w_locked));
 `endif
-
     // 50MHz Clock for SD card and Ethernet
     wire clk_50mhz, w_locked_50mhz;
     clk_wiz_2 clkgen2 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(clk_50mhz), .locked(w_locked_50mhz));
@@ -288,6 +282,9 @@ module m_main(
         // input clk, rst (active-low)
         .mig_clk        (mig_clk),
         .mig_rst_x      (!RST),
+`ifdef ARTYA7
+        .ref_clk        (ref_clk),
+`endif
         // memory interface ports
 `ifndef ARTYA7
         .ddr2_dq        (ddr2_dq),
@@ -305,7 +302,6 @@ module m_main(
         .ddr2_dm        (ddr2_dm),
         .ddr2_odt       (ddr2_odt),
 `else
-	.ref_clk        (ref_clk),
         .ddr3_dq        (ddr3_dq),
         .ddr3_dqs_n     (ddr3_dqs_n),
         .ddr3_dqs_p     (ddr3_dqs_p),
@@ -428,7 +424,14 @@ module m_main(
                                             (w_priv == `PRIV_U) ? 3'b001 :
                                             (w_priv == `PRIV_S) ? 3'b010 :
                                             (w_priv == `PRIV_M) ? 3'b100 : 0;
-endmodule
+
+    assign w_led[0] = r_time_led;
+    assign w_led[1] = w_init_done;
+    assign w_led[2] = w_data_we;
+    assign w_led[3] = w_busy;
+    assign w_led[15:4] = 0;
+
+endmodule // m_main
 
 /**************************************************************************************************/
 module m_7segled (w_in, r_led);
@@ -536,6 +539,7 @@ module m_7segcon(w_clk, w_rst_x, w_load, w_din, r_sg, r_an);
     wire [7:0] w_segments;
     m_7segled m_7segled (r_in, w_segments);
     always@(posedge w_clk) r_sg <= (w_load) ? ~r_load : (w_rst_x) ? ~w_segments : ~r_init;
+
 endmodule
 /**************************************************************************************************/
 

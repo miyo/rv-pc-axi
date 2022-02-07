@@ -191,12 +191,21 @@ module DRAM_con#(
 endmodule
 /**************************************************************************************************/
 module DRAM_Wrapper #(
+`ifndef ARTYA7
               parameter DDR2_DQ_WIDTH   = 16,
               parameter DDR2_DQS_WIDTH  = 2,
               parameter DDR2_ADDR_WIDTH = 13,
               parameter DDR2_BA_WIDTH   = 3,
               parameter DDR2_DM_WIDTH   = 2,
               parameter APP_ADDR_WIDTH  = 27,
+`else
+              parameter DDR3_DQ_WIDTH   = 16,
+              parameter DDR3_DQS_WIDTH  = 2,
+              parameter DDR3_ADDR_WIDTH = 14,
+              parameter DDR3_BA_WIDTH   = 3,
+              parameter DDR3_DM_WIDTH   = 2,
+              parameter APP_ADDR_WIDTH  = 28,
+`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -205,6 +214,7 @@ module DRAM_Wrapper #(
      input  wire                         mig_clk,
      input  wire                         mig_rst_x,
      // memory interface ports
+`ifndef ARTYA7
      inout  wire [DDR2_DQ_WIDTH-1 : 0]   ddr2_dq,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_n,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_p,
@@ -219,6 +229,22 @@ module DRAM_Wrapper #(
      output wire [0:0]                   ddr2_cs_n,
      output wire [DDR2_DM_WIDTH-1 : 0]   ddr2_dm,
      output wire [0:0]                   ddr2_odt,
+`else
+     inout  wire [DDR3_DQ_WIDTH-1 : 0]   ddr3_dq,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_n,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_p,
+     output wire [DDR3_ADDR_WIDTH-1 : 0] ddr3_addr,
+     output wire [DDR3_BA_WIDTH-1 : 0]   ddr3_ba,
+     output wire                         ddr3_ras_n,
+     output wire                         ddr3_cas_n,
+     output wire                         ddr3_we_n,
+     output wire [0:0]                   ddr3_ck_p,
+     output wire [0:0]                   ddr3_ck_n,
+     output wire [0:0]                   ddr3_cke,
+     output wire [0:0]                   ddr3_cs_n,
+     output wire [DDR3_DM_WIDTH-1 : 0]   ddr3_dm,
+     output wire [0:0]                   ddr3_odt,
+`endif
      // output clk, rst (active-low)
      output wire                         o_clk,
      output wire                         o_rst_x,
@@ -281,6 +307,7 @@ module DRAM_Wrapper #(
                .mig_clk(mig_clk),
                .mig_rst_x(mig_rst_x),
                // memory interface ports
+`ifndef ARTYA7
                .ddr2_dq(ddr2_dq),
                .ddr2_dqs_n(ddr2_dqs_n),
                .ddr2_dqs_p(ddr2_dqs_p),
@@ -295,6 +322,22 @@ module DRAM_Wrapper #(
                .ddr2_cs_n(ddr2_cs_n),
                .ddr2_dm(ddr2_dm),
                .ddr2_odt(ddr2_odt),
+`else
+               .ddr3_dq(ddr3_dq),
+               .ddr3_dqs_n(ddr3_dqs_n),
+               .ddr3_dqs_p(ddr3_dqs_p),
+               .ddr3_addr(ddr3_addr),
+               .ddr3_ba(ddr3_ba),
+               .ddr3_ras_n(ddr3_ras_n),
+               .ddr3_cas_n(ddr3_cas_n),
+               .ddr3_we_n(ddr3_we_n),
+               .ddr3_ck_p(ddr3_ck_p),
+               .ddr3_ck_n(ddr3_ck_n),
+               .ddr3_cke(ddr3_cke),
+               .ddr3_cs_n(ddr3_cs_n),
+               .ddr3_dm(ddr3_dm),
+               .ddr3_odt(ddr3_odt),
+`endif
                // output clk, rst (active-low)
                .o_clk(o_clk),
                .o_rst_x(o_rst_x),

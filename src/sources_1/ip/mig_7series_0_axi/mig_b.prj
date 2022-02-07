@@ -19,7 +19,7 @@
 
   <XADC_En>Disabled</XADC_En>
 
-  <TargetFPGA>xc7a35ti-csg324/-1L</TargetFPGA>
+  <TargetFPGA>xc7a100t-csg324/-1</TargetFPGA>
 
   <Version>4.2</Version>
 
@@ -37,14 +37,18 @@
 
   <dci_cascade>0</dci_cascade>
 
+  <FPGADevice>
+    <selected>7a/xc7a100ti-csg324</selected>
+  </FPGADevice>
+
   <Controller number="0">
     <MemoryDevice>DDR3_SDRAM/Components/MT41K128M16XX-15E</MemoryDevice>
-    <TimePeriod>3000</TimePeriod>
+    <TimePeriod>3077</TimePeriod>
     <VccAuxIO>1.8V</VccAuxIO>
     <PHYRatio>4:1</PHYRatio>
-    <InputClkFreq>333.333</InputClkFreq>
+    <InputClkFreq>324.991</InputClkFreq>
     <UIExtraClocks>0</UIExtraClocks>
-    <MMCM_VCO>666</MMCM_VCO>
+    <MMCM_VCO>649</MMCM_VCO>
     <MMCMClkOut0> 1.000</MMCMClkOut0>
     <MMCMClkOut1>1</MMCMClkOut1>
     <MMCMClkOut2>1</MMCMClkOut2>

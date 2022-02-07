@@ -88,7 +88,11 @@ module DRAM_con_witout_cache #(
     wire                        dram_init_calib_complete;
     wire                        dram_ren;
     wire                        dram_wen;
+`ifndef ARTYA7
     wire [APP_ADDR_WIDTH-2 : 0] dram_addr;
+`else
+    wire [APP_ADDR_WIDTH-1 : 0] dram_addr;
+`endif
     wire [APP_DATA_WIDTH-1 : 0] dram_din;
     wire [APP_DATA_WIDTH-1 : 0] dram_dout;
     wire                        dram_dout_valid;
@@ -340,12 +344,21 @@ endmodule
 
 /**************************************************************************************************/
 module DRAMController #(
+`ifndef ARTYA7
                         parameter DDR2_DQ_WIDTH   = 16,
                         parameter DDR2_DQS_WIDTH  = 2,
                         parameter DDR2_ADDR_WIDTH = 13,
                         parameter DDR2_BA_WIDTH   = 3,
                         parameter DDR2_DM_WIDTH   = 2,
                         parameter APP_ADDR_WIDTH  = 27,
+`else
+                        parameter DDR3_DQ_WIDTH   = 16,
+                        parameter DDR3_DQS_WIDTH  = 2,
+                        parameter DDR3_ADDR_WIDTH = 14,
+                        parameter DDR3_BA_WIDTH   = 3,
+                        parameter DDR3_DM_WIDTH   = 2,
+                        parameter APP_ADDR_WIDTH  = 28,
+`endif
                         parameter APP_CMD_WIDTH   = 3,
                         parameter APP_DATA_WIDTH  = 128,
                         parameter APP_MASK_WIDTH  = 16)
@@ -353,7 +366,11 @@ module DRAMController #(
      // input clk, rst (active-low)
      input  wire                         sys_clk,
      input  wire                         sys_rst_x,
+`ifdef ARTYA7
+     input  wire                         ref_clk, 
+`endif
      // memory interface ports
+`ifndef ARTYA7
      inout  wire [DDR2_DQ_WIDTH-1 : 0]   ddr2_dq,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_n,
      inout  wire [DDR2_DQS_WIDTH-1 : 0]  ddr2_dqs_p,
@@ -368,6 +385,23 @@ module DRAMController #(
      output wire [0:0]                   ddr2_cs_n,
      output wire [DDR2_DM_WIDTH-1 : 0]   ddr2_dm,
      output wire [0:0]                   ddr2_odt,
+`else
+     inout  wire [DDR3_DQ_WIDTH-1 : 0]   ddr3_dq,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_n,
+     inout  wire [DDR3_DQS_WIDTH-1 : 0]  ddr3_dqs_p,
+     output wire [DDR3_ADDR_WIDTH-1 : 0] ddr3_addr,
+     output wire [DDR3_BA_WIDTH-1 : 0]   ddr3_ba,
+     output wire                         ddr3_ras_n,
+     output wire                         ddr3_cas_n,
+     output wire                         ddr3_we_n,
+     output wire [0:0]                   ddr3_ck_p,
+     output wire [0:0]                   ddr3_ck_n,
+     output wire                         ddr3_reset_n,
+     output wire [0:0]                   ddr3_cke,
+     output wire [0:0]                   ddr3_cs_n,
+     output wire [DDR3_DM_WIDTH-1 : 0]   ddr3_dm,
+     output wire [0:0]                   ddr3_odt,
+`endif
      // output clk, rst (active-low)
      output wire                         o_clk,
      output wire                         o_rst_x,
@@ -381,7 +415,11 @@ module DRAMController #(
      output wire                         o_data_valid,
      output wire                         o_ready,
      output wire                         o_wdf_ready,
+`ifndef ARTYA7
      input  wire [3:0]                   i_mask);
+`else
+     (* mark_debug *) input  wire [APP_MASK_WIDTH-1 : 0]  i_mask);
+`endif
 
     localparam STATE_CALIB           = 3'b000;
     localparam STATE_IDLE            = 3'b001;
@@ -409,7 +447,11 @@ module DRAMController #(
 
     reg  [2:0]                  state;
 
+`ifndef ARTYA7
     reg  [3:0]                  data_mask = 0;
+`else
+    reg  [APP_MASK_WIDTH-1 : 0] data_mask = 0;
+`endif
 
     assign o_clk = clk;
     assign o_rst_x = ~rst;
@@ -425,6 +467,7 @@ module DRAMController #(
     mig_7series_0 mig
       (
        // memory interface ports
+`ifndef ARTYA7
        .ddr2_addr           (ddr2_addr),
        .ddr2_ba             (ddr2_ba),
        .ddr2_cas_n          (ddr2_cas_n),
@@ -439,6 +482,23 @@ module DRAMController #(
        .ddr2_cs_n           (ddr2_cs_n),
        .ddr2_dm             (ddr2_dm),
        .ddr2_odt            (ddr2_odt),
+`else
+       .ddr3_addr           (ddr3_addr),
+       .ddr3_ba             (ddr3_ba),
+       .ddr3_cas_n          (ddr3_cas_n),
+       .ddr3_ck_n           (ddr3_ck_n),
+       .ddr3_ck_p           (ddr3_ck_p),
+       .ddr3_reset_n        (ddr3_reset_n),
+       .ddr3_cke            (ddr3_cke),
+       .ddr3_ras_n          (ddr3_ras_n),
+       .ddr3_we_n           (ddr3_we_n),
+       .ddr3_dq             (ddr3_dq),
+       .ddr3_dqs_n          (ddr3_dqs_n),
+       .ddr3_dqs_p          (ddr3_dqs_p),
+       .ddr3_cs_n           (ddr3_cs_n),
+       .ddr3_dm             (ddr3_dm),
+       .ddr3_odt            (ddr3_odt),
+`endif
        // calibration
        .init_calib_complete (init_calib_complete),
        // application interface ports
@@ -464,7 +524,12 @@ module DRAMController #(
        .app_wdf_mask        ({{(APP_MASK_WIDTH-4){1'b1}}, data_mask}),
        // system clock, reset ports
        .sys_clk_i           (sys_clk),
+`ifndef ARTYA7
        .sys_rst             (sys_rst_x));
+`else
+       .sys_rst             (sys_rst_x),
+       .clk_ref_i           (ref_clk));
+`endif
 
     always @(posedge clk) begin
         if (rst) begin
