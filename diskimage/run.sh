@@ -1,8 +1,10 @@
 #!/bin/sh
 
-if [ -z "$PREFIX" ]; then
-PREFIX="/opt/riscv/bin/"
+if [ -z "$RISCV_TOOL" ]; then
+RISCV_TOOL="/opt/riscv/bin/"
 fi
+
+export PATH=$RISCV_TOOL:$PATH
 
 # How to build Berkeley Boot Loader and RISC-V Linux kernel
 
@@ -26,7 +28,7 @@ cd ../
 # (4) build the RISC-V bbl binary
 mkdir -p riscv-pk-1.0.0/build
 cd riscv-pk-1.0.0/build
-../configure -prefix=${PREFIX} --enable-logo --enable-print-device-tree --host=riscv32-unknown-linux-gnu --with-arch=rv32ima --with-payload=../../linux-5.0/vmlinux
+../configure -prefix=${RISCV_TOOL} --enable-logo --enable-print-device-tree --host=riscv32-unknown-linux-gnu --with-arch=rv32ima --with-payload=../../linux-5.0/vmlinux
 make -j$(nproc)
 riscv32-unknown-linux-gnu-objcopy -O binary bbl bbl.bin
 cd ../../
