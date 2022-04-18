@@ -7,7 +7,26 @@
 `include "define.vh"
 
 /**************************************************************************************************/
-module m_mmu(
+module m_mmu#(
+`ifndef ARTYA7
+              parameter DDR2_DQ_WIDTH   = 16,
+              parameter DDR2_DQS_WIDTH  = 2,
+              parameter DDR2_ADDR_WIDTH = 13,
+              parameter DDR2_BA_WIDTH   = 3,
+              parameter DDR2_DM_WIDTH   = 2,
+              parameter APP_ADDR_WIDTH  = 27,
+`else
+              parameter DDR3_DQ_WIDTH   = 16,
+              parameter DDR3_DQS_WIDTH  = 2,
+              parameter DDR3_ADDR_WIDTH = 14,
+              parameter DDR3_BA_WIDTH   = 3,
+              parameter DDR3_DM_WIDTH   = 2,
+              parameter APP_ADDR_WIDTH  = 28,
+`endif
+              parameter APP_CMD_WIDTH   = 3,
+              parameter APP_DATA_WIDTH  = 128,  // Note
+              parameter APP_MASK_WIDTH  = 16)
+    (
     input  wire         CLK, clk_50mhz, clk_100mhz, RST_X,
     input  wire [31:0]  w_insn_addr, w_data_addr,
     input  wire [31:0]  w_data_wdata,
@@ -33,39 +52,58 @@ module m_mmu(
     output wire         w_init_done,
     input  wire         mig_clk,
     input  wire         mig_rst_x,
-`ifndef ARTYA7
-    inout  wire [15:0]  ddr2_dq,
-    inout  wire  [1:0]  ddr2_dqs_n,
-    inout  wire  [1:0]  ddr2_dqs_p,
-    output wire [12:0]  ddr2_addr,
-    output wire  [2:0]  ddr2_ba,
-    output wire         ddr2_ras_n,
-    output wire         ddr2_cas_n,
-    output wire         ddr2_we_n,
-    output wire         ddr2_ck_p,
-    output wire         ddr2_ck_n,
-    output wire         ddr2_cke,
-    output wire         ddr2_cs_n,
-    output wire  [1:0]  ddr2_dm,
-    output wire         ddr2_odt,
-`else // ARTYA7
+
+`ifdef ARTYA7
     input  wire         ref_clk,
-    inout  wire [15:0]  ddr3_dq,
-    inout  wire  [1:0]  ddr3_dqs_n,
-    inout  wire  [1:0]  ddr3_dqs_p,
-    output wire [13:0]  ddr3_addr,
-    output wire  [2:0]  ddr3_ba,
-    output wire         ddr3_ras_n,
-    output wire         ddr3_cas_n,
-    output wire         ddr3_we_n,
-    output wire         ddr3_ck_p,
-    output wire         ddr3_ck_n,
-    output wire         ddr3_reset_n,
-    output wire         ddr3_cke,
-    output wire         ddr3_cs_n,
-    output wire  [1:0]  ddr3_dm,
-    output wire         ddr3_odt,
 `endif
+
+     output wire [3:0] s_axi_awid,
+     output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
+     output wire [7:0] s_axi_awlen,
+     output wire [2:0] s_axi_awsize,
+     output wire [1:0] s_axi_awburst,
+     output wire [0:0] s_axi_awlock,
+     output wire [3:0] s_axi_awcache,
+     output wire [2:0] s_axi_awprot,
+     output wire [3:0] s_axi_awqos,
+     output wire s_axi_awvalid,
+     input wire s_axi_awready,
+
+     output wire [APP_DATA_WIDTH-1:0] s_axi_wdata,
+     output wire [APP_MASK_WIDTH-1:0] s_axi_wstrb,
+     output wire s_axi_wlast,
+     output wire s_axi_wvalid,
+     input wire s_axi_wready,
+
+     input wire [3:0] s_axi_bid,
+     input wire [1:0] s_axi_bresp,
+     input wire s_axi_bvalid,
+     output wire s_axi_bready,
+
+     output wire [3:0] s_axi_arid,
+     output wire [APP_ADDR_WIDTH-1:0] s_axi_araddr,
+     output wire [7:0] s_axi_arlen,
+     output wire [2:0] s_axi_arsize,
+     output wire [1:0] s_axi_arburst,
+     output wire [0:0] s_axi_arlock,
+     output wire [3:0] s_axi_arcache,
+     output wire [2:0] s_axi_arprot,
+     output wire [3:0] s_axi_arqos,
+     output wire s_axi_arvalid,
+     input wire s_axi_arready,
+
+     input wire [3:0] s_axi_rid,
+     input wire [APP_DATA_WIDTH-1:0] s_axi_rdata,
+     input wire [1:0] s_axi_rresp,
+     input wire s_axi_rlast,
+     input wire s_axi_rvalid,
+     output wire s_axi_rready,
+
+     input wire mig_ui_clk,
+     input wire mig_ui_rst_x,
+     input wire dram_init_calib_complete,
+     input wire calib_done,
+
     output wire         o_clk,
     output wire         o_rst_x,
     output wire  [7:0]  w_uart_data,
@@ -1081,7 +1119,7 @@ module m_mmu(
     m_dram_sim#(`MEM_SIZE) idbmem(CLK, w_dram_addr_t2, w_dram_odata, w_dram_we_t, w_dram_le,
                                     w_dram_wdata_t, w_dram_ctrl_t, w_dram_busy, w_mtime[31:0]);
 `else
-    wire calib_done;
+
     DRAM_conRV dram_con (
                                 // user interface ports
                                .i_rd_en(w_dram_le),
@@ -1098,44 +1136,58 @@ module m_mmu(
                                .ref_clk(ref_clk),
 `endif
                                // memory interface ports
-`ifndef ARTYA7
-                               .ddr2_dq(ddr2_dq),
-                               .ddr2_dqs_n(ddr2_dqs_n),
-                               .ddr2_dqs_p(ddr2_dqs_p),
-                               .ddr2_addr(ddr2_addr),
-                               .ddr2_ba(ddr2_ba),
-                               .ddr2_ras_n(ddr2_ras_n),
-                               .ddr2_cas_n(ddr2_cas_n),
-                               .ddr2_we_n(ddr2_we_n),
-                               .ddr2_ck_p(ddr2_ck_p),
-                               .ddr2_ck_n(ddr2_ck_n),
-                               .ddr2_cke(ddr2_cke),
-                               .ddr2_cs_n(ddr2_cs_n),
-                               .ddr2_dm(ddr2_dm),
-                               .ddr2_odt(ddr2_odt),
-`else
-                               .ddr3_dq(ddr3_dq),
-                               .ddr3_dqs_n(ddr3_dqs_n),
-                               .ddr3_dqs_p(ddr3_dqs_p),
-                               .ddr3_addr(ddr3_addr),
-                               .ddr3_ba(ddr3_ba),
-                               .ddr3_ras_n(ddr3_ras_n),
-                               .ddr3_cas_n(ddr3_cas_n),
-                               .ddr3_we_n(ddr3_we_n),
-                               .ddr3_ck_p(ddr3_ck_p),
-                               .ddr3_ck_n(ddr3_ck_n),
-                               .ddr3_reset_n(ddr3_reset_n),
-                               .ddr3_cke(ddr3_cke),
-                               .ddr3_cs_n(ddr3_cs_n),
-                               .ddr3_dm(ddr3_dm),
-                               .ddr3_odt(ddr3_odt),
-`endif
+	       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
+	       .s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr
+	       .s_axi_awlen                    (s_axi_awlen),  // input [7:0]			s_axi_awlen
+	       .s_axi_awsize                   (s_axi_awsize),  // input [2:0]			s_axi_awsize
+	       .s_axi_awburst                  (s_axi_awburst),  // input [1:0]			s_axi_awburst
+	       .s_axi_awlock                   (s_axi_awlock),  // input [0:0]			s_axi_awlock
+	       .s_axi_awcache                  (s_axi_awcache),  // input [3:0]			s_axi_awcache
+	       .s_axi_awprot                   (s_axi_awprot),  // input [2:0]			s_axi_awprot
+	       .s_axi_awqos                    (s_axi_awqos),  // input [3:0]			s_axi_awqos
+	       .s_axi_awvalid                  (s_axi_awvalid),  // input			s_axi_awvalid
+	       .s_axi_awready                  (s_axi_awready),  // output			s_axi_awready
+	       // Slave Interface Write Data Ports
+	       .s_axi_wdata                    (s_axi_wdata),  // input [127:0]			s_axi_wdata
+	       .s_axi_wstrb                    (s_axi_wstrb),  // input [15:0]			s_axi_wstrb
+	       .s_axi_wlast                    (s_axi_wlast),  // input			s_axi_wlast
+	       .s_axi_wvalid                   (s_axi_wvalid),  // input			s_axi_wvalid
+	       .s_axi_wready                   (s_axi_wready),  // output			s_axi_wready
+	       // Slave Interface Write Response Ports
+	       .s_axi_bid                      (s_axi_bid),  // output [3:0]			s_axi_bid
+	       .s_axi_bresp                    (s_axi_bresp),  // output [1:0]			s_axi_bresp
+	       .s_axi_bvalid                   (s_axi_bvalid),  // output			s_axi_bvalid
+	       .s_axi_bready                   (s_axi_bready),  // input			s_axi_bready
+	       // Slave Interface Read Address Ports
+	       .s_axi_arid                     (s_axi_arid),  // input [3:0]			s_axi_arid
+	       .s_axi_araddr                   (s_axi_araddr),  // input [27:0]			s_axi_araddr
+	       .s_axi_arlen                    (s_axi_arlen),  // input [7:0]			s_axi_arlen
+	       .s_axi_arsize                   (s_axi_arsize),  // input [2:0]			s_axi_arsize
+	       .s_axi_arburst                  (s_axi_arburst),  // input [1:0]			s_axi_arburst
+	       .s_axi_arlock                   (s_axi_arlock),  // input [0:0]			s_axi_arlock
+	       .s_axi_arcache                  (s_axi_arcache),  // input [3:0]			s_axi_arcache
+	       .s_axi_arprot                   (s_axi_arprot),  // input [2:0]			s_axi_arprot
+	       .s_axi_arqos                    (s_axi_arqos),  // input [3:0]			s_axi_arqos
+	       .s_axi_arvalid                  (s_axi_arvalid),  // input			s_axi_arvalid
+	       .s_axi_arready                  (s_axi_arready),  // output			s_axi_arready
+	       // Slave Interface Read Data Ports
+	       .s_axi_rid                      (s_axi_rid),  // output [3:0]			s_axi_rid
+	       .s_axi_rdata                    (s_axi_rdata),  // output [127:0]			s_axi_rdata
+	       .s_axi_rresp                    (s_axi_rresp),  // output [1:0]			s_axi_rresp
+	       .s_axi_rlast                    (s_axi_rlast),  // output			s_axi_rlast
+	       .s_axi_rvalid                   (s_axi_rvalid),  // output			s_axi_rvalid
+	       .s_axi_rready                   (s_axi_rready),  // input			s_axi_rready
+	       .mig_ui_clk(mig_ui_clk),
+	       .mig_ui_rst_x(mig_ui_rst_x),
+	       .dram_init_calib_complete(dram_init_calib_complete),
+
                                // output clk, rst (active-low)
                                .o_clk(o_clk),
                                .o_rst_x(o_rst_x),
                                // other
-                               .o_init_calib_complete(calib_done)
+                               .i_init_calib_complete(calib_done)
                                );
+
 `endif
 
     assign w_led = (w_proc_busy << 12) | (r_mc_mode << 8)
