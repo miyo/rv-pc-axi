@@ -8,6 +8,16 @@ export PATH=$RISCV_TOOL:$PATH
 
 # How to build Berkeley Boot Loader and RISC-V Linux kernel
 
+# (0) Pre-requirements
+
+## device-tree-compiler
+
+git clone https://github.com/vagrantc/device-tree-compiler.git
+cd device-tree-compiler
+git checkout 063d02187b584e40998a700d64a3530f287c68e2
+make
+cd ..
+
 # (1) File download
 wget -nc https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-5.0.tar.gz
 wget -nc https://github.com/riscv/riscv-pk/archive/v1.0.0.tar.gz
@@ -63,7 +73,7 @@ cd devicetree
 # Edit source files if needed
 
 # (3) Build the device tree binary file
-dtc -I dts -O dtb devicetree_75mhz.dts -o devicetree_75mhz.dtb
+./device-tree-compiler/dtc -I dts -O dtb devicetree_75mhz.dts -o devicetree_75mhz.dtb
 cd ../
 cp devicetree/devicetree_75mhz.dtb devicetree.dtb
 

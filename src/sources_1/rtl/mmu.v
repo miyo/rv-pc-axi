@@ -988,7 +988,8 @@ module m_mmu(
     wire w_rec_done;
     m_debug_key debug_KEY(CLK, RST_X, w_debug_btnd, w_debug_txd, w_uart_we, w_uart_data, w_mtime[31:0], w_rec_done);
 
-    assign w_txd = (w_rec_done) ? w_debug_txd : w_cons_txd;
+    //assign w_txd = (w_rec_done) ? w_debug_txd : w_cons_txd;
+    assign w_txd = w_cons_txd;
 
 /**************************************************************************************************/
     reg          r_bbl_done   = 0;
