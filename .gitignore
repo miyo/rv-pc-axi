@@ -95,3 +95,4 @@ diskimage/initmem_gen/init_disk.txt
 diskimage/buildroot-*
 diskimage/linux-*
 diskimage/riscv-pk-*
+diskimage/device-tree-compiler

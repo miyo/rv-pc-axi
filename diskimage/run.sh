@@ -73,7 +73,7 @@ cd devicetree
 # Edit source files if needed
 
 # (3) Build the device tree binary file
-./device-tree-compiler/dtc -I dts -O dtb devicetree_75mhz.dts -o devicetree_75mhz.dtb
+../device-tree-compiler/dtc -I dts -O dtb devicetree_75mhz.dts -o devicetree_75mhz.dtb
 cd ../
 cp devicetree/devicetree_75mhz.dtb devicetree.dtb
 
