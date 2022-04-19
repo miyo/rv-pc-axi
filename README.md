@@ -3,13 +3,16 @@
 RV-PC-AXI is a variation of RV-PC that uses AXI-version MIG. Using AXI makes it is easy to port various FPGA boards.
 This version works on Arty A7-100T.
 
+## How to Build
+
+In this project, Vivado 2020.2 is used.
+
 ```bash
 $ vivado -mode batch -source main-arty-a7-100.tcl
 ```
 or by selecting main.tcl in Tools -> Run Tcl Script in Vivado GUI.
 
-Then open main/main.xpr with Vivado.
-
+Then open main/main.xpr with Vivado, and Click `Generate Bitstream` in Flow Navigator. You can get `artya7.bit`.
 
 
 # RV-PC
