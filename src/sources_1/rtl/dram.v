@@ -31,9 +31,7 @@ module DRAM_con_witout_cache #(
      // input clk, rst (active-low)
      input  wire                         mig_clk,
      input  wire                         mig_rst_x,
-`ifdef ARTYA7
-     input  wire                         ref_clk,
-`endif
+
      // memory interface ports
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
@@ -82,8 +80,8 @@ module DRAM_con_witout_cache #(
      input wire dram_init_calib_complete,
 
      // output clk, rst (active-low)
-     output wire                         o_clk,
-     output wire                         o_rst_x,
+     input wire                         i_clk,
+     input wire                         i_rst_x,
      // user interface ports
      input  wire                         i_rd_en,
      input  wire                         i_wr_en,
@@ -93,9 +91,6 @@ module DRAM_con_witout_cache #(
      output wire [127:0]                 o_data,
      output wire                         o_busy,
      input  wire [3:0]                   i_mask);
-
-    wire                        clk;
-    wire                        rst_x;
 
     wire                        dram_ren;
     wire                        dram_wen;
@@ -135,42 +130,15 @@ module DRAM_con_witout_cache #(
     localparam STATE_WRITE = 2'b10;
     localparam STATE_READ  = 2'b11;
 
-    wire locked;
-    wire rst_x_async;
-    reg  rst_x_sync1;
-    reg  rst_x_sync2;
-
-    clk_wiz_1 clkgen1 (
-                       .clk_in1(mig_ui_clk),
-                       .resetn(mig_ui_rst_x),
-                       .clk_out1(clk),
-                       .locked(locked));
-
-    assign rst_x_async = mig_ui_rst_x & locked;
-    assign rst_x = rst_x_sync2;
-
-    always @(posedge clk or negedge rst_x_async) begin
-        if (!rst_x_async) begin
-            rst_x_sync1 <= 1'b0;
-            rst_x_sync2 <= 1'b0;
-        end else begin
-            rst_x_sync1 <= 1'b1;
-            rst_x_sync2 <= rst_x_sync1;
-        end
-    end
-
-    assign o_clk = clk;
-    assign o_rst_x = rst_x;
-
     // MIPS core -> MIG
     assign ren_afifo1 = (dram_ren || dram_wen);
     AsyncFIFO #(
                 .DATA_WIDTH(69),
                 .ADDR_WIDTH(2))
     afifo1 (
-            .wclk(clk),
+            .wclk(i_clk),
             .rclk(mig_ui_clk),
-            .i_wrst_x(rst_x),
+            .i_wrst_x(i_rst_x),
             .i_rrst_x(mig_ui_rst_x),
             .i_wen(wen_afifo1),
             .i_data(din_afifo1),
@@ -188,9 +156,9 @@ module DRAM_con_witout_cache #(
                 .ADDR_WIDTH(2))
     afifo2 (
             .wclk(mig_ui_clk),
-            .rclk(clk),
+            .rclk(i_clk),
             .i_wrst_x(mig_ui_rst_x),
-            .i_rrst_x(rst_x),
+            .i_rrst_x(i_rst_x),
             .i_wen(wen_afifo2),
             .i_data(din_afifo2),
             .i_ren(ren_afifo2),
@@ -234,9 +202,7 @@ module DRAM_con_witout_cache #(
         // input clk, rst (active-low)
         .sys_clk(mig_clk),
         .sys_rst_x(mig_rst_x),
-`ifdef ARTYA7
-        .ref_clk(ref_clk),
-`endif
+
         // memory interface ports
 	.s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
 	.s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr
@@ -304,8 +270,8 @@ module DRAM_con_witout_cache #(
 `endif
 
     // state machine
-    always @(negedge clk) begin
-        if (!rst_x) begin
+    always @(negedge i_clk) begin
+        if (!i_rst_x) begin
             state <= STATE_CALIB;
             wen_afifo1 <= 0;
             din_afifo1 <= 0;

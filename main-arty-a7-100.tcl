@@ -8,7 +8,7 @@ if { [info exists ::origin_dir_loc] } {
 }
 
 # Set the project name
-set _xil_proj_name_ "main"
+set _xil_proj_name_ "artya7"
 
 # Use project name variable, if specified in the tcl shell
 if { [info exists ::user_project_name] } {
@@ -16,7 +16,7 @@ if { [info exists ::user_project_name] } {
 }
 
 variable script_file
-set script_file "main.tcl"
+set script_file "main-arty-a7-100.tcl"
 
 # Help information for this script
 proc print_help {} {
@@ -122,6 +122,7 @@ set files [list \
  [file normalize "${origin_dir}/src/sources_1/rtl/sdccont.v" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/sdcram.v" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/main.v" ]\
+ [file normalize "${origin_dir}/src/sources_1/rtl/artya7.v" ]\
  [file normalize "${origin_dir}/src/sources_1/ip/mig_7series_0_axi/mig_a.prj" ]\
  [file normalize "${origin_dir}/src/sources_1/ip/mig_7series_0_axi/mig_b.prj" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/top.v" ]\
@@ -157,7 +158,7 @@ set_property -name "scoped_to_cells" -value "mig_7series_0_axi" -objects $file_o
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "m_main" -objects $obj
+set_property -name "top" -value "artya7" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Set 'sources_1' fileset object
@@ -274,7 +275,7 @@ set obj [get_filesets sim_1]
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "top" -value "m_main" -objects $obj
+set_property -name "top" -value "artya7" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
 # Set 'utils_1' fileset object

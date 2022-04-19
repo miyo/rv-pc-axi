@@ -23,9 +23,7 @@ module DRAMController_AXI #(
      // input clk, rst (active-low)
      input  wire                         sys_clk,
      input  wire                         sys_rst_x,
-`ifdef ARTYA7
-     input  wire                         ref_clk, 
-`endif
+
      // memory interface ports
      output reg [3:0] s_axi_awid,
      output reg [APP_ADDR_WIDTH-1:0] s_axi_awaddr,

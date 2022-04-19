@@ -53,10 +53,6 @@ module m_mmu#(
     input  wire         mig_clk,
     input  wire         mig_rst_x,
 
-`ifdef ARTYA7
-    input  wire         ref_clk,
-`endif
-
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
      output wire [7:0] s_axi_awlen,
@@ -104,8 +100,8 @@ module m_mmu#(
      input wire dram_init_calib_complete,
      input wire calib_done,
 
-    output wire         o_clk,
-    output wire         o_rst_x,
+    input wire         i_clk,
+    input wire         i_rst_x,
     output wire  [7:0]  w_uart_data,
     output wire         w_uart_we,
     output wire [15:0]  w_led,
@@ -130,6 +126,7 @@ module m_mmu#(
     output wire [ 3:0]  vga_blue,
     output wire         vga_h_sync,
     output wire         vga_v_sync,
+    input  wire         pix_clk,
     inout  wire         usb_ps2_clk,
     inout  wire         usb_ps2_data,
 `ifdef CH559_USB
@@ -532,9 +529,6 @@ module m_mmu#(
 
     color_converter c0(.i_data(w_mem_wdata[15: 0]), .o_data(w_fb_wdata0));
     color_converter c1(.i_data(w_mem_wdata[31:16]), .o_data(w_fb_wdata1));
-
-    wire pix_clk;
-    clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(), .clk_out1(pix_clk), .locked());
 
     framebuf  fb0 (
         .i_wclk(CLK),
@@ -1132,9 +1126,7 @@ module m_mmu#(
                                // input clk, rst (active-low)
                                .mig_clk(mig_clk),
                                .mig_rst_x(mig_rst_x),
-`ifdef ARTYA7
-                               .ref_clk(ref_clk),
-`endif
+
                                // memory interface ports
 	       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
 	       .s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr
@@ -1182,8 +1174,8 @@ module m_mmu#(
 	       .dram_init_calib_complete(dram_init_calib_complete),
 
                                // output clk, rst (active-low)
-                               .o_clk(o_clk),
-                               .o_rst_x(o_rst_x),
+                               .i_clk(i_clk),
+                               .i_rst_x(i_rst_x),
                                // other
                                .i_init_calib_complete(calib_done)
                                );

@@ -85,8 +85,8 @@ module DRAM_conRV#(
      input wire dram_init_calib_complete,
 
      // output clk, rst (active-low)
-     output wire                         o_clk,
-     output wire                         o_rst_x,
+     input wire                         i_clk,
+     input wire                         i_rst_x,
      // user interface ports
      input  wire                         i_rd_en,
      input  wire                         i_wr_en,
@@ -107,7 +107,7 @@ module DRAM_conRV#(
     reg  [31:0] r_wdata = 0;
     reg         r_rd    = 0;
 
-    always @(posedge o_clk) begin
+    always @(posedge i_clk) begin
         if((i_rd_en || i_wr_en) && !o_busy) begin
             r_ctrl  <= i_ctrl;
             r_addr  <= i_addr;
@@ -183,8 +183,8 @@ module DRAM_conRV#(
 	       .dram_init_calib_complete(dram_init_calib_complete),
 
                // output clk, rst (active-low)
-               .o_clk(o_clk),
-               .o_rst_x(o_rst_x),
+               .i_clk(i_clk),
+               .i_rst_x(i_rst_x),
                // user interface ports
                .i_rd_en(r_rd),
                .i_wr_en(r_we),
@@ -431,8 +431,8 @@ module DRAM_conX#(
      input wire dram_init_calib_complete,
 
      // output clk, rst (active-low)
-     output wire                         o_clk,
-     output wire                         o_rst_x,
+     input wire                         i_clk,
+     input wire                         i_rst_x,
      // user interface ports
      input  wire                         i_rd_en,
      input  wire                         i_wr_en,
@@ -463,8 +463,8 @@ module DRAM_conX#(
     wire[127:0] c_odata;
 
     cach_controller cach_controller(
-        .clk(o_clk),
-        .rst_x(o_rst_x),
+        .clk(i_clk),
+        .rst_x(i_rst_x),
         .i_rd_en(i_rd_en),
         .i_wr_en(i_wr_en),
         .i_addr(i_addr),
@@ -485,7 +485,7 @@ module DRAM_conX#(
         .dram_addr(w_dram_addr)
         );
 
-    m_dram_cache#(28,128,`CACHE_SIZE/16) cache(o_clk, 1'b1, 1'b0, c_clr, c_we,
+    m_dram_cache#(28,128,`CACHE_SIZE/16) cache(i_clk, 1'b1, 1'b0, c_clr, c_we,
                                 c_addr[31:4], c_idata, c_odata, c_oe);
 
     DRAM_Wrapper2 dram (
@@ -542,8 +542,8 @@ module DRAM_conX#(
 	       .dram_init_calib_complete(dram_init_calib_complete),
 
                // output clk, rst (active-low)
-               .o_clk(o_clk),
-               .o_rst_x(o_rst_x),
+               .i_clk(i_clk),
+               .i_rst_x(i_rst_x),
                // user interface ports
                .i_rd_en(w_dram_le),
                .i_wr_en(w_dram_we),
@@ -632,8 +632,8 @@ module DRAM_Wrapper2 #(
      input wire dram_init_calib_complete,
      
      // output clk, rst (active-low)
-     output wire                         o_clk,
-     output wire                         o_rst_x,
+     input wire                         i_clk,
+     input wire                         i_rst_x,
      // user interface ports
      input  wire                         i_rd_en,
      input  wire                         i_wr_en,
@@ -651,7 +651,7 @@ module DRAM_Wrapper2 #(
 
     reg  [127:0]r_o_data = 0;
     reg         r_o_busy = 0;
-    always @(posedge o_clk) begin
+    always @(posedge i_clk) begin
         r_o_data <= w_ctrl_data;
         r_o_busy <= w_o_busy;
     end
@@ -669,7 +669,7 @@ module DRAM_Wrapper2 #(
     reg         r_le = 0;
     reg         r_we = 0;
 
-    always @(posedge o_clk) begin
+    always @(posedge i_clk) begin
         //if(i_rd_en) begin
         r_mask  <= i_mask;
         r_iaddr <= i_addr;
@@ -733,8 +733,8 @@ module DRAM_Wrapper2 #(
 	       .dram_init_calib_complete(dram_init_calib_complete),
 	       
                // output clk, rst (active-low)
-               .o_clk(o_clk),
-               .o_rst_x(o_rst_x),
+               .i_clk(i_clk),
+               .i_rst_x(i_rst_x),
                // user interface ports
                .i_rd_en(r_le),
                .i_wr_en(r_we),
