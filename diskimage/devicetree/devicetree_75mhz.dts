@@ -99,6 +99,6 @@
 	};
 
 	chosen {
-		bootargs = "root=/dev/vda rw fbcon=font:PEARL8x8";
+		bootargs = "root=/dev/vda rw fbcon=font:PEARL8x8 console=hvc0";
 	};
 };

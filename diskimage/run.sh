@@ -16,6 +16,7 @@ git clone https://github.com/vagrantc/device-tree-compiler.git
 cd device-tree-compiler
 git checkout 063d02187b584e40998a700d64a3530f287c68e2
 make
+export PATH=$(pwd):$PATH
 cd ..
 
 # (1) File download
