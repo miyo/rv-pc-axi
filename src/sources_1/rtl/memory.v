@@ -12,21 +12,7 @@
 /**** DRAM Controller with Cache                                                               ****/
 /**************************************************************************************************/
 module DRAM_conRV#(
-`ifndef ARTYA7
-              parameter DDR2_DQ_WIDTH   = 16,
-              parameter DDR2_DQS_WIDTH  = 2,
-              parameter DDR2_ADDR_WIDTH = 13,
-              parameter DDR2_BA_WIDTH   = 3,
-              parameter DDR2_DM_WIDTH   = 2,
-              parameter APP_ADDR_WIDTH  = 27,
-`else
-              parameter DDR3_DQ_WIDTH   = 16,
-              parameter DDR3_DQS_WIDTH  = 2,
-              parameter DDR3_ADDR_WIDTH = 14,
-              parameter DDR3_BA_WIDTH   = 3,
-              parameter DDR3_DM_WIDTH   = 2,
               parameter APP_ADDR_WIDTH  = 28,
-`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -129,7 +115,12 @@ module DRAM_conRV#(
     wire w_busy;
     assign o_busy = w_busy | r_we | r_rd;
 
-    DRAM_conX dram (
+    DRAM_conX#(
+               .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
+               .APP_CMD_WIDTH(APP_CMD_WIDTH),
+               .APP_DATA_WIDTH(APP_DATA_WIDTH),
+               .APP_MASK_WIDTH(APP_MASK_WIDTH))
+    dram (
                // input clk, rst (active-low)
                .mig_clk(mig_clk),
                .mig_rst_x(mig_rst_x),
@@ -358,21 +349,7 @@ endmodule //cach_controller
 /**** DRAM Controller with Cache                                                               ****/
 /**************************************************************************************************/
 module DRAM_conX#(
-`ifndef ARTYA7
-              parameter DDR2_DQ_WIDTH   = 16,
-              parameter DDR2_DQS_WIDTH  = 2,
-              parameter DDR2_ADDR_WIDTH = 13,
-              parameter DDR2_BA_WIDTH   = 3,
-              parameter DDR2_DM_WIDTH   = 2,
-              parameter APP_ADDR_WIDTH  = 27,
-`else
-              parameter DDR3_DQ_WIDTH   = 16,
-              parameter DDR3_DQS_WIDTH  = 2,
-              parameter DDR3_ADDR_WIDTH = 14,
-              parameter DDR3_BA_WIDTH   = 3,
-              parameter DDR3_DM_WIDTH   = 2,
               parameter APP_ADDR_WIDTH  = 28,
-`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -488,7 +465,12 @@ module DRAM_conX#(
     m_dram_cache#(28,128,`CACHE_SIZE/16) cache(i_clk, 1'b1, 1'b0, c_clr, c_we,
                                 c_addr[31:4], c_idata, c_odata, c_oe);
 
-    DRAM_Wrapper2 dram (
+    DRAM_Wrapper2#(
+                   .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
+                   .APP_CMD_WIDTH(APP_CMD_WIDTH),
+                   .APP_DATA_WIDTH(APP_DATA_WIDTH),
+                   .APP_MASK_WIDTH(APP_MASK_WIDTH))
+    dram (
                // input clk, rst (active-low)
                .mig_clk(mig_clk),
                .mig_rst_x(mig_rst_x),
@@ -559,21 +541,7 @@ endmodule
 /**************************************************************************************************/
 /**************************************************************************************************/
 module DRAM_Wrapper2 #(
-`ifndef ARTYA7
-              parameter DDR2_DQ_WIDTH   = 16,
-              parameter DDR2_DQS_WIDTH  = 2,
-              parameter DDR2_ADDR_WIDTH = 13,
-              parameter DDR2_BA_WIDTH   = 3,
-              parameter DDR2_DM_WIDTH   = 2,
-              parameter APP_ADDR_WIDTH  = 27,
-`else
-              parameter DDR3_DQ_WIDTH   = 16,
-              parameter DDR3_DQS_WIDTH  = 2,
-              parameter DDR3_ADDR_WIDTH = 14,
-              parameter DDR3_BA_WIDTH   = 3,
-              parameter DDR3_DM_WIDTH   = 2,
               parameter APP_ADDR_WIDTH  = 28,
-`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -682,7 +650,12 @@ module DRAM_Wrapper2 #(
 
     wire [31:0] w_ctrl_iaddr = (r_we) ? {r_iaddr[31:2],2'b0} : {r_iaddr[31:4],4'b0};
 
-    DRAM_con_witout_cache dram_con_witout_cache (
+    DRAM_con_without_cache#(
+                     .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
+                     .APP_CMD_WIDTH(APP_CMD_WIDTH),
+                     .APP_DATA_WIDTH(APP_DATA_WIDTH),
+                     .APP_MASK_WIDTH(APP_MASK_WIDTH))
+    dram_con_without_cache (
                // input clk, rst (active-low)
                .mig_clk(mig_clk),
                .mig_rst_x(mig_rst_x),

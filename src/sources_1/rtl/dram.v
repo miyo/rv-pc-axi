@@ -8,22 +8,8 @@
 
 /**************************************************************************************************/
 /*** For Nexys A7 board ***************************************************************************/
-module DRAM_con_witout_cache #(
-`ifndef ARTYA7
-              parameter DDR2_DQ_WIDTH   = 16,
-              parameter DDR2_DQS_WIDTH  = 2,
-              parameter DDR2_ADDR_WIDTH = 13,
-              parameter DDR2_BA_WIDTH   = 3,
-              parameter DDR2_DM_WIDTH   = 2,
-              parameter APP_ADDR_WIDTH  = 27,
-`else
-              parameter DDR3_DQ_WIDTH   = 16,
-              parameter DDR3_DQS_WIDTH  = 2,
-              parameter DDR3_ADDR_WIDTH = 14,
-              parameter DDR3_BA_WIDTH   = 3,
-              parameter DDR3_DM_WIDTH   = 2,
+module DRAM_con_without_cache #(
               parameter APP_ADDR_WIDTH  = 28,
-`endif
               parameter APP_CMD_WIDTH   = 3,
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
@@ -181,19 +167,6 @@ module DRAM_con_witout_cache #(
 `endif
 
     DRAMController_AXI #(
-`ifndef ARTYA7
-                     .DDR2_DQ_WIDTH(DDR2_DQ_WIDTH),
-                     .DDR2_DQS_WIDTH(DDR2_DQS_WIDTH),
-                     .DDR2_ADDR_WIDTH(DDR2_ADDR_WIDTH),
-                     .DDR2_BA_WIDTH(DDR2_BA_WIDTH),
-                     .DDR2_DM_WIDTH(DDR2_DM_WIDTH),
-`else
-                     .DDR3_DQ_WIDTH(DDR3_DQ_WIDTH),
-                     .DDR3_DQS_WIDTH(DDR3_DQS_WIDTH),
-                     .DDR3_ADDR_WIDTH(DDR3_ADDR_WIDTH),
-                     .DDR3_BA_WIDTH(DDR3_BA_WIDTH),
-                     .DDR3_DM_WIDTH(DDR3_DM_WIDTH),
-`endif
                      .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
                      .APP_CMD_WIDTH(APP_CMD_WIDTH),
                      .APP_DATA_WIDTH(APP_DATA_WIDTH),

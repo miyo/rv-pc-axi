@@ -1,3 +1,4 @@
+`default_nettype none
 
 module sdcram_controller(
     input  wire        i_clk,
@@ -687,7 +688,6 @@ module sd_interface#(
     wire        sdc_ready_for_next_byte;
     wire        sdc_ready;
     wire [40:0] sdc_address;
-    wire [ 4:0] sdc_state;
 
     sd_controller sdc(
         .i_clk(i_clk),
@@ -1114,3 +1114,6 @@ endmodule
     .doutb(doutb)    // Port B RAM output data, width determined from NB_COL*COL_WIDTH
   );
 */
+
+`default_nettype wire
+

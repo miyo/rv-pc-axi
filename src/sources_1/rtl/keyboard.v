@@ -122,9 +122,6 @@ module m_keyboard(CLK, RST_X, w_we, w_addr_t, w_idata, w_iirq, w_odata,
     assign w_qnum = QueueNum;
     assign w_qsel = (w_key_recv) ? 0 : w_idata;
 
-    wire       w_ps2_we;
-    wire [7:0] w_ps2_data;
-
     reg        r_ps2_we;
     reg  [7:0] r_ps2_data;
 
