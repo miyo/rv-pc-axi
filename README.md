@@ -1,3 +1,17 @@
+# RV-PC-AXI
+
+RV-PC-AXI is a variation of RV-PC that uses AXI-version MIG. Using AXI makes it is easy to port various FPGA boards.
+This version works on Arty A7-100T.
+
+```bash
+$ vivado -mode batch -source main-arty-a7-100.tcl
+```
+or by selecting main.tcl in Tools -> Run Tcl Script in Vivado GUI.
+
+Then open main/main.xpr with Vivado.
+
+
+
 # RV-PC
 RV-PC is a GUI-capable RISC-V computer system  on low-end FPGA boards.
 It is based on [RVSoC](https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php), a portable and Linux capable RISC-V computer system on an FPGA.
