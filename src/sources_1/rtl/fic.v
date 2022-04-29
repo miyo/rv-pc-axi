@@ -374,7 +374,7 @@ module fic#(
     reg [31:0] counter = 32'h0;
     always @(posedge CLK) begin
 	counter <= counter + 1;
-	if(counter > 1000) begin
+	if(counter > 3000) begin
 	    reset <= 1'b0;
 	end
     end
