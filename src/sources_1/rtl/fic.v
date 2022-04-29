@@ -254,13 +254,13 @@ module fic#(
       .vga_blue(),
       .vga_h_sync(),
       .vga_v_sync(),
-      .usb_ps2_clk(1'b0),
-      .usb_ps2_data(1'b0),
+      .usb_ps2_clk(),
+      .usb_ps2_data(),
 `ifdef CH559_USB
       .ch559_rx(1'b0),
 `else
-      .pmod_ps2_clk(1'b0),
-      .pmod_ps2_data(1'b0)
+      .pmod_ps2_clk(),
+      .pmod_ps2_data()
 `endif
       );
 
