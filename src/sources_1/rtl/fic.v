@@ -101,7 +101,7 @@ module fic#(
 
     wire pix_clk;
     wire clk_100mhz = CLK;
-    clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(), .clk_out1(pix_clk), .locked());
+    clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(1'b0), .clk_out1(pix_clk), .locked());
 
     wire RST        = ~w_locked || ~w_locked_50mhz;
     //////////////////////////////////////

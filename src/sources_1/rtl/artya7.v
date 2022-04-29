@@ -112,7 +112,7 @@ module artya7#(
 
     wire pix_clk;
     wire clk_100mhz = CLK;
-    clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(), .clk_out1(pix_clk), .locked());
+    clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(1'b0), .clk_out1(pix_clk), .locked());
 
     wire mig_clk, ref_clk;
     clk_wiz_0 m_clkgen0 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(), .clk_out2(ref_clk), .clk_out3(mig_clk), .locked(w_locked));
