@@ -127,50 +127,50 @@ module artya7#(
     wire [15:0] w_led;
     assign w_ledx = w_led[3:0];//w_insn_data[3:0];
 
-              wire [3:0] s_axi_awid;
-              wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr;
-              wire [7:0] s_axi_awlen;
-              wire [2:0] s_axi_awsize;
-              wire [1:0] s_axi_awburst;
-              wire [0:0] s_axi_awlock;
-              wire [3:0] s_axi_awcache;
-              wire [2:0] s_axi_awprot;
-              wire [3:0] s_axi_awqos;
-              wire s_axi_awvalid;
-              wire s_axi_awready;
-
-              wire [APP_DATA_WIDTH-1:0] s_axi_wdata;
-              wire [APP_MASK_WIDTH-1:0] s_axi_wstrb;
-              wire s_axi_wlast;
-              wire s_axi_wvalid;
-              wire s_axi_wready;
-
-              wire [3:0] s_axi_bid;
-              wire [1:0] s_axi_bresp;
-              wire s_axi_bvalid;
-              wire s_axi_bready;
-
-              wire [3:0] s_axi_arid;
-              wire [APP_ADDR_WIDTH-1:0] s_axi_araddr;
-              wire [7:0] s_axi_arlen;
-              wire [2:0] s_axi_arsize;
-              wire [1:0] s_axi_arburst;
-              wire [0:0] s_axi_arlock;
-              wire [3:0] s_axi_arcache;
-              wire [2:0] s_axi_arprot;
-              wire [3:0] s_axi_arqos;
-              wire s_axi_arvalid;
-              wire s_axi_arready;
-
-              wire [3:0] s_axi_rid;
-              wire [APP_DATA_WIDTH-1:0] s_axi_rdata;
-              wire [1:0] s_axi_rresp;
-              wire s_axi_rlast;
-              wire s_axi_rvalid;
-              wire s_axi_rready;
-
-              wire dram_init_calib_complete;
-              wire calib_done;
+    wire [3:0] s_axi_awid;
+    wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr;
+    wire [7:0] s_axi_awlen;
+    wire [2:0] s_axi_awsize;
+    wire [1:0] s_axi_awburst;
+    wire [0:0] s_axi_awlock;
+    wire [3:0] s_axi_awcache;
+    wire [2:0] s_axi_awprot;
+    wire [3:0] s_axi_awqos;
+    wire s_axi_awvalid;
+    wire s_axi_awready;
+    
+    wire [APP_DATA_WIDTH-1:0] s_axi_wdata;
+    wire [APP_MASK_WIDTH-1:0] s_axi_wstrb;
+    wire s_axi_wlast;
+    wire s_axi_wvalid;
+    wire s_axi_wready;
+    
+    wire [3:0] s_axi_bid;
+    wire [1:0] s_axi_bresp;
+    wire s_axi_bvalid;
+    wire s_axi_bready;
+    
+    wire [3:0] s_axi_arid;
+    wire [APP_ADDR_WIDTH-1:0] s_axi_araddr;
+    wire [7:0] s_axi_arlen;
+    wire [2:0] s_axi_arsize;
+    wire [1:0] s_axi_arburst;
+    wire [0:0] s_axi_arlock;
+    wire [3:0] s_axi_arcache;
+    wire [2:0] s_axi_arprot;
+    wire [3:0] s_axi_arqos;
+    wire s_axi_arvalid;
+    wire s_axi_arready;
+    
+    wire [3:0] s_axi_rid;
+    wire [APP_DATA_WIDTH-1:0] s_axi_rdata;
+    wire [1:0] s_axi_rresp;
+    wire s_axi_rlast;
+    wire s_axi_rvalid;
+    wire s_axi_rready;
+    
+    wire dram_init_calib_complete;
+    wire calib_done;
 
     m_main#(
             .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
@@ -189,7 +189,6 @@ module artya7#(
       .clk_100mhz(clk_100mhz),
       .clk_50mhz(clk_50mhz),
       .pix_clk(pix_clk),
-      .mig_clk(mig_clk),
 
       .w_led(w_led),
       .r_sg(),

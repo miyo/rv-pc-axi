@@ -24,7 +24,6 @@ module m_main#(
               input wire clk_100mhz,
               input wire clk_50mhz,
               input wire pix_clk,
-              input wire mig_clk,
 
               output wire [15:0] w_led,
               output reg   [7:0] r_sg,
@@ -286,9 +285,6 @@ module m_main#(
       .w_txd          (w_txd),
       .w_rxd          (w_rxd),
       .w_init_done    (w_init_done),
-      // input clk, rst (active-low)
-      .mig_clk        (mig_clk),
-      .mig_rst_x      (!RST),
 
       // memory interface ports
       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid

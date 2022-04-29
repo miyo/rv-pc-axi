@@ -6,10 +6,6 @@ module DRAMController_AXI #(
                         parameter APP_DATA_WIDTH  = 128,
                         parameter APP_MASK_WIDTH  = 16)
     (
-     // input clk, rst (active-low)
-     input  wire                         sys_clk,
-     input  wire                         sys_rst_x,
-
      // memory interface ports
      output reg [3:0] s_axi_awid,
      output reg [APP_ADDR_WIDTH-1:0] s_axi_awaddr,

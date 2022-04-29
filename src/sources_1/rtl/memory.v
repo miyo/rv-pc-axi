@@ -17,9 +17,6 @@ module DRAM_conRV#(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-     // input clk, rst (active-low)
-     input  wire                         mig_clk,
-     input  wire                         mig_rst_x,
 `ifdef ARTYA7
      input  wire                         ref_clk,
 `endif
@@ -121,9 +118,6 @@ module DRAM_conRV#(
                .APP_DATA_WIDTH(APP_DATA_WIDTH),
                .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dram (
-               // input clk, rst (active-low)
-               .mig_clk(mig_clk),
-               .mig_rst_x(mig_rst_x),
 `ifdef ARTYA7
                .ref_clk(ref_clk),
 `endif
@@ -354,9 +348,6 @@ module DRAM_conX#(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-     // input clk, rst (active-low)
-     input  wire                         mig_clk,
-     input  wire                         mig_rst_x,
 `ifdef ARTYA7
      input  wire                         ref_clk,
 `endif
@@ -471,9 +462,6 @@ module DRAM_conX#(
                    .APP_DATA_WIDTH(APP_DATA_WIDTH),
                    .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dram (
-               // input clk, rst (active-low)
-               .mig_clk(mig_clk),
-               .mig_rst_x(mig_rst_x),
 `ifdef ARTYA7
                .ref_clk(ref_clk),
 `endif
@@ -546,9 +534,6 @@ module DRAM_Wrapper2 #(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-     // input clk, rst (active-low)
-     input  wire                         mig_clk,
-     input  wire                         mig_rst_x,
 `ifdef ARTYA7
      input  wire                         ref_clk,
 `endif
@@ -656,9 +641,6 @@ module DRAM_Wrapper2 #(
                      .APP_DATA_WIDTH(APP_DATA_WIDTH),
                      .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dram_con_without_cache (
-               // input clk, rst (active-low)
-               .mig_clk(mig_clk),
-               .mig_rst_x(mig_rst_x),
                // memory interface ports
 	       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
 	       .s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr

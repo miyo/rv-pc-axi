@@ -14,9 +14,6 @@ module DRAM_con_without_cache #(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-     // input clk, rst (active-low)
-     input  wire                         mig_clk,
-     input  wire                         mig_rst_x,
 
      // memory interface ports
      output wire [3:0] s_axi_awid,
@@ -172,9 +169,6 @@ module DRAM_con_without_cache #(
                      .APP_DATA_WIDTH(APP_DATA_WIDTH),
                      .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dc (
-        // input clk, rst (active-low)
-        .sys_clk(mig_clk),
-        .sys_rst_x(mig_rst_x),
 
         // memory interface ports
 	.s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid

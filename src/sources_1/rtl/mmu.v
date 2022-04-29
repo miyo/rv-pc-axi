@@ -36,8 +36,6 @@ module m_mmu#(
     output wire         w_txd,
     input  wire         w_rxd,
     output wire         w_init_done,
-    input  wire         mig_clk,
-    input  wire         mig_rst_x,
 
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
@@ -1114,9 +1112,6 @@ module m_mmu#(
               .o_data(w_dram_odata128),
               .o_busy(w_dram_busy),
               .i_ctrl(w_dram_ctrl_t),
-              // input clk, rst (active-low)
-              .mig_clk(mig_clk),
-              .mig_rst_x(mig_rst_x),
 	      
               // memory interface ports
 	      .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
