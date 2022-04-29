@@ -81,6 +81,7 @@
 #########
 src/sources_1/ip/*/**
 !src/sources_1/ip/*/*.xci
+!src/sources_1/ip/fic_mk2/*/*.xci
 !src/sources_1/ip/*/*.prj
 /main/
 !*.md
