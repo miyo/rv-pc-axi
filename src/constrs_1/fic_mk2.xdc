@@ -1,21 +1,9 @@
-# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-#                -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}] \
-# 	       -to [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-# 	       -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}]
-# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-#                -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}] \
-# 	       -to [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-# 	       -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}]
-# set_false_path -from [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]] \
-#                -to [get_clocks -of_objects [get_pins clkgen1/inst/mmcme3_adv_inst/CLKOUT0]]
-# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-#                -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}] \
-# 	       -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
-# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] \
-#                -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}] \
-# 	       -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
-# set_false_path -from [get_clocks -of_objects [get_pins clkgen1/inst/mmcme3_adv_inst/CLKOUT0]] \
-#                -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
+# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] #                -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}] # 	       -to [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] # 	       -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}]
+# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] #                -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}] # 	       -to [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] # 	       -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}]
+# set_false_path -from [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]] #                -to [get_clocks -of_objects [get_pins clkgen1/inst/mmcme3_adv_inst/CLKOUT0]]
+# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] #                -filter {IS_GENERATED && MASTER_CLOCK == FGCK_P}] # 	       -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
+# set_false_path -from [get_clocks -of_objects [get_pins clk_wiz_0_i/inst/mmcme3_adv_inst/CLKOUT0] #                -filter {IS_GENERATED && MASTER_CLOCK == sys_clk_pin}] # 	       -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
+# set_false_path -from [get_clocks -of_objects [get_pins clkgen1/inst/mmcme3_adv_inst/CLKOUT0]] #                -to [get_clocks -of_objects [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]]
 
 # create_generated_clock -name mig_in_clk [get_pins m_clkgen0/inst/mmcm_adv_inst/CLKOUT0]
 #
@@ -28,9 +16,9 @@ create_generated_clock -name mig_in_clk [get_pins clk_wiz_0_i/inst/mmcme3_adv_in
 create_generated_clock -name core_clk [get_pins clkgen1/inst/mmcme3_adv_inst/CLKOUT0]
 create_generated_clock -name ddr4_clk [get_pins ddr4_0_i/inst/u_ddr4_infrastructure/gen_mmcme3.u_mmcme_adv_inst/CLKOUT0]
 
-set_clock_groups -asynchronous -group {mig_in_clk}
-set_clock_groups -asynchronous -group {core_clk}
-set_clock_groups -asynchronous -group {ddr4_clk}
+set_clock_groups -asynchronous -group mig_in_clk
+set_clock_groups -asynchronous -group core_clk
+set_clock_groups -asynchronous -group ddr4_clk
 
 set_property -dict {PACKAGE_PIN AV27 IOSTANDARD SUB_LVDS DIFF_TERM_ADV TERM_100} [get_ports FGCK_P]
 set_property -dict {PACKAGE_PIN AV28 IOSTANDARD SUB_LVDS DIFF_TERM_ADV TERM_100} [get_ports FGCK_N]
@@ -47,16 +35,16 @@ set_property -dict {PACKAGE_PIN E40 IOSTANDARD LVCMOS18} [get_ports uart_rx]
 set_property IOSTANDARD DIFF_SSTL12_DCI [get_ports c0_sys_clk_p]
 set_property IOSTANDARD DIFF_SSTL12_DCI [get_ports c0_sys_clk_n]
 
-set_property -dict { PACKAGE_PIN A37   IOSTANDARD LVCMOS18 } [get_ports { sd_dat[3] }];
-set_property -dict { PACKAGE_PIN C36   IOSTANDARD LVCMOS18 } [get_ports { sd_cmd    }];
-set_property -dict { PACKAGE_PIN D38   IOSTANDARD LVCMOS18 } [get_ports { sd_dat[0] }];
-set_property -dict { PACKAGE_PIN A40   IOSTANDARD LVCMOS18 } [get_ports { sd_sclk   }];
-set_property -dict { PACKAGE_PIN B36   IOSTANDARD LVCMOS18 } [get_ports { sd_dat[1] }];
-set_property -dict { PACKAGE_PIN E36   IOSTANDARD LVCMOS18 } [get_ports { sd_dat[2] }];
-set_property -dict { PACKAGE_PIN C39   IOSTANDARD LVCMOS18 } [get_ports { sd_cd     }];
-set_property -dict { PACKAGE_PIN A39   IOSTANDARD LVCMOS18 } [get_ports { sd_rst    }];
+set_property -dict {PACKAGE_PIN A37 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
+set_property -dict {PACKAGE_PIN C36 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
+set_property -dict {PACKAGE_PIN D38 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
+set_property -dict {PACKAGE_PIN A40 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
+set_property -dict {PACKAGE_PIN B36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
+set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
+set_property -dict {PACKAGE_PIN C39 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+set_property -dict {PACKAGE_PIN A39 IOSTANDARD LVCMOS18} [get_ports sd_rst]
 
-set_property -dict { PACKAGE_PIN B35   IOSTANDARD LVCMOS18 } [get_ports { level_conv_oe }];
+set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports level_conv_oe]
 
 
 # ============ DDR_M0 (Bank 69). ========================================
@@ -231,4 +219,5 @@ set_property PACKAGE_PIN N18 [get_ports {c0_ddr4_cs_n[1]}]
 set_property PACKAGE_PIN P18 [get_ports {c0_ddr4_odt[1]}]
 #	set_property PACKAGE_PIN M17				[get_ports "c0_ddr4_cs_n[2]"		]
 #	set_property PACKAGE_PIN N17				[get_ports "c0_ddr4_cs_n[3]"		]
+
 

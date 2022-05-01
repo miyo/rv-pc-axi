@@ -104,7 +104,7 @@ module DRAM_con_without_cache #(
     wire [127:0]                dout_afifo2;
     wire                        empty_afifo2;
 
-    reg [1:0]                   state;
+    (* mark_debug *) reg [1:0]  state;
 
     wire [3:0]                  data_mask;
 

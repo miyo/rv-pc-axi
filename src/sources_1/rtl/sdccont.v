@@ -61,21 +61,21 @@ module sd_controller(
 
     localparam WRITE_DATA_SIZE = 515;
 
-    reg [ 4:0] state = RST;
-    reg [ 4:0] return_state;
-    reg        sclk_sig = 0;
-    reg [55:0] cmd_out;
-    reg [ 7:0] recv_data;
-    reg [39:0] recv_data_R7;
-    reg        cmd_mode = 1;
-    reg [ 7:0] data_sig = 8'hFF;
-    reg [ 9:0] byte_counter;
-    reg [13:0] bit_counter;
-    reg [31:0] block_counter;
-    reg [26:0] boot_counter = 27'd100_000_000;
-    reg [ 7:0] dout = 0;
-    reg        byte_available = 0;
-    reg        ready_for_next_byte = 0;
+    (* mark_debug *) reg [ 4:0] state = RST;
+    (* mark_debug *) reg [ 4:0] return_state;
+    (* mark_debug *) reg        sclk_sig = 0;
+    (* mark_debug *) reg [55:0] cmd_out;
+    (* mark_debug *) reg [ 7:0] recv_data;
+    (* mark_debug *) reg [39:0] recv_data_R7;
+    (* mark_debug *) reg        cmd_mode = 1;
+    (* mark_debug *) reg [ 7:0] data_sig = 8'hFF;
+    (* mark_debug *) reg [ 9:0] byte_counter;
+    (* mark_debug *) reg [13:0] bit_counter;
+    (* mark_debug *) reg [31:0] block_counter;
+    (* mark_debug *) reg [26:0] boot_counter = 27'd100_000_000;
+    (* mark_debug *) reg [ 7:0] dout = 0;
+    (* mark_debug *) reg        byte_available = 0;
+    (* mark_debug *) reg        ready_for_next_byte = 0;
 
     assign o_ready = (state == IDLE);
     assign o_data  = dout;

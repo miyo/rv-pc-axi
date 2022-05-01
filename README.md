@@ -5,7 +5,7 @@ This version works on Arty A7-100T.
 
 ## How to Build
 
-In this project, Vivado 2020.2 is used.
+In this project, Vivado 2020.2 is used for Arty A7 and Vivado 2021.2 is used for FiC.
 
 ```bash
 $ vivado -mode batch -source main-arty-a7-100.tcl

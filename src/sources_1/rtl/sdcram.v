@@ -43,7 +43,7 @@ module sdcram_controller(
     localparam  SEND          = 3;
     localparam  WAIT_COMPLETE = 4;
 
-    reg [2:0] r_state = IDLE;
+    (* mark_debug *) reg [2:0] r_state = IDLE;
     assign o_busy = (r_state != IDLE);
 
     always @ (posedge i_clk) begin
@@ -111,11 +111,11 @@ module SDPLOADER(
 
 
 
-    reg [31:0] r_addr   = 0;
-    reg [31:0] r_data   = 0;
-    reg        r_we     = 0;
-    reg        r_done   = 0;
-    reg        r_sd_ren = 0;
+    (* mark_debug *) reg [31:0] r_addr   = 0;
+    (* mark_debug *) reg [31:0] r_data   = 0;
+    (* mark_debug *) reg        r_we     = 0;
+    (* mark_debug *) reg        r_done   = 0;
+    (* mark_debug *) reg        r_sd_ren = 0;
 
     assign sdcram_ren = r_sd_ren;
     assign sdcram_addr = {9'h0, r_addr};
@@ -130,7 +130,7 @@ module SDPLOADER(
     localparam  SD_WAIT   = 2;
     localparam  DRAM_WAIT = 3;
 
-    reg [1:0] r_state = IDLE;
+    (* mark_debug *) reg [1:0] r_state = IDLE;
     assign o_we = r_state==DRAM_WAIT & !w_dram_busy;
 
     always @ (posedge i_clk) begin

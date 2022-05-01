@@ -559,10 +559,10 @@ module m_mmu#(
 
     // SD card program loader
 
-    wire [31:0] loader_addr;
-    wire [31:0] loader_data;
-    wire        loader_we;
-    wire        loader_done;
+    (* mark_debug *) wire [31:0] loader_addr;
+    (* mark_debug *) wire [31:0] loader_data;
+    (* mark_debug *) wire        loader_we;
+    (* mark_debug *) wire        loader_done;
 
 
     SDPLOADER sp(
@@ -1008,11 +1008,11 @@ module m_mmu#(
     assign w_txd = w_cons_txd;
 
 /**************************************************************************************************/
-    reg          r_bbl_done   = 0;
-    reg          r_dtree_done = 0;
-    reg          r_disk_done  = 1;
-    reg  [31:0]  r_initaddr  = 0;
-    reg  [31:0]  r_initaddr3 = (16*1024*1024); /* initial address of Device Tree */
+    (* mark_debug *) reg          r_bbl_done   = 0;
+    (* mark_debug *) reg          r_dtree_done = 0;
+    (* mark_debug *) reg          r_disk_done  = 1;
+    (* mark_debug *) reg  [31:0]  r_initaddr  = 0;
+    (* mark_debug *) reg  [31:0]  r_initaddr3 = (16*1024*1024); /* initial address of Device Tree */
 
     // Zero init
     wire w_zero_we;
@@ -1023,7 +1023,7 @@ module m_mmu#(
 `ifdef SIM_MODE
     reg  [2:0] r_init_state = 4;
 `else
-    reg  [2:0] r_init_state = 0;
+    (* mark_debug *) reg  [2:0] r_init_state = 0;
     always@(posedge CLK) begin
         r_init_state <= (!RST_X) ? 0 :
                       (r_init_state == 0)              ? 2 :

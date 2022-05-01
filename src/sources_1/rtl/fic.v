@@ -106,50 +106,50 @@ module fic#(
     wire RST        = ~w_locked || ~w_locked_50mhz;
     //////////////////////////////////////
 
-    wire [3:0] s_axi_awid;
-    wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr;
-    wire [7:0] s_axi_awlen;
-    wire [2:0] s_axi_awsize;
-    wire [1:0] s_axi_awburst;
-    wire [0:0] s_axi_awlock;
-    wire [3:0] s_axi_awcache;
-    wire [2:0] s_axi_awprot;
-    wire [3:0] s_axi_awqos;
-    wire s_axi_awvalid;
-    wire s_axi_awready;
+    (* mark_debug *) wire [3:0] s_axi_awid;
+    (* mark_debug *) wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr;
+    (* mark_debug *) wire [7:0] s_axi_awlen;
+    (* mark_debug *) wire [2:0] s_axi_awsize;
+    (* mark_debug *) wire [1:0] s_axi_awburst;
+    (* mark_debug *) wire [0:0] s_axi_awlock;
+    (* mark_debug *) wire [3:0] s_axi_awcache;
+    (* mark_debug *) wire [2:0] s_axi_awprot;
+    (* mark_debug *) wire [3:0] s_axi_awqos;
+    (* mark_debug *) wire s_axi_awvalid;
+    (* mark_debug *) wire s_axi_awready;
     
-    wire [APP_DATA_WIDTH-1:0] s_axi_wdata;
-    wire [APP_MASK_WIDTH-1:0] s_axi_wstrb;
-    wire s_axi_wlast;
-    wire s_axi_wvalid;
-    wire s_axi_wready;
+    (* mark_debug *) wire [APP_DATA_WIDTH-1:0] s_axi_wdata;
+    (* mark_debug *) wire [APP_MASK_WIDTH-1:0] s_axi_wstrb;
+    (* mark_debug *) wire s_axi_wlast;
+    (* mark_debug *) wire s_axi_wvalid;
+    (* mark_debug *) wire s_axi_wready;
     
-    wire [3:0] s_axi_bid;
-    wire [1:0] s_axi_bresp;
-    wire s_axi_bvalid;
-    wire s_axi_bready;
+    (* mark_debug *) wire [3:0] s_axi_bid;
+    (* mark_debug *) wire [1:0] s_axi_bresp;
+    (* mark_debug *) wire s_axi_bvalid;
+    (* mark_debug *) wire s_axi_bready;
     
-    wire [3:0] s_axi_arid;
-    wire [APP_ADDR_WIDTH-1:0] s_axi_araddr;
-    wire [7:0] s_axi_arlen;
-    wire [2:0] s_axi_arsize;
-    wire [1:0] s_axi_arburst;
-    wire [0:0] s_axi_arlock;
-    wire [3:0] s_axi_arcache;
-    wire [2:0] s_axi_arprot;
-    wire [3:0] s_axi_arqos;
-    wire s_axi_arvalid;
-    wire s_axi_arready;
+    (* mark_debug *) wire [3:0] s_axi_arid;
+    (* mark_debug *) wire [APP_ADDR_WIDTH-1:0] s_axi_araddr;
+    (* mark_debug *) wire [7:0] s_axi_arlen;
+    (* mark_debug *) wire [2:0] s_axi_arsize;
+    (* mark_debug *) wire [1:0] s_axi_arburst;
+    (* mark_debug *) wire [0:0] s_axi_arlock;
+    (* mark_debug *) wire [3:0] s_axi_arcache;
+    (* mark_debug *) wire [2:0] s_axi_arprot;
+    (* mark_debug *) wire [3:0] s_axi_arqos;
+    (* mark_debug *) wire s_axi_arvalid;
+    (* mark_debug *) wire s_axi_arready;
     
-    wire [3:0] s_axi_rid;
-    wire [APP_DATA_WIDTH-1:0] s_axi_rdata;
-    wire [1:0] s_axi_rresp;
-    wire s_axi_rlast;
-    wire s_axi_rvalid;
-    wire s_axi_rready;
+    (* mark_debug *) wire [3:0] s_axi_rid;
+    (* mark_debug *) wire [APP_DATA_WIDTH-1:0] s_axi_rdata;
+    (* mark_debug *) wire [1:0] s_axi_rresp;
+    (* mark_debug *) wire s_axi_rlast;
+    (* mark_debug *) wire s_axi_rvalid;
+    (* mark_debug *) wire s_axi_rready;
     
-    wire dram_init_calib_complete;
-    wire calib_done;
+    (* mark_debug *) wire dram_init_calib_complete;
+    (* mark_debug *) wire calib_done;
 
     wire        w_led1_B;
     wire        w_led1_G;
@@ -390,6 +390,20 @@ module fic#(
     assign c0_ddr4_s_axi_ctrl_arvalid = 1'b0;
     assign c0_ddr4_s_axi_ctrl_araddr = 32'h0;
     assign c0_ddr4_s_axi_ctrl_rready = 1'b1;
+
+    // synchronize the calibration status signal: MIG -> MIPS core
+    reg                         dram_init_calib_complete_sync1;
+    reg                         dram_init_calib_complete_sync2;
+    always @(posedge CORE_CLK) begin
+        if (!RST_X2) begin
+            dram_init_calib_complete_sync1 <= 1'b0;
+            dram_init_calib_complete_sync2 <= 1'b0;
+        end else begin
+            dram_init_calib_complete_sync1 <= dram_init_calib_complete;
+            dram_init_calib_complete_sync2 <= dram_init_calib_complete_sync1;
+        end
+    end
+    assign calib_done = dram_init_calib_complete_sync2;
 
 endmodule // artya7
 

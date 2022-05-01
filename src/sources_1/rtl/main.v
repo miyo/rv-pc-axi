@@ -124,8 +124,8 @@ module m_main#(
     always@(posedge CORE_CLK) r_time_led <= (r_cnt==0) ? !r_time_led : r_time_led;
 
     /*******************************************************************************/
-    reg         r_stop = 0;
-    reg  [63:0] r_core_cnt = 0;
+    (* mark_debug *) reg         r_stop = 0;
+    (* mark_debug *) reg  [63:0] r_core_cnt = 0;
 
     // Connection Core <--> mem_ctrl
     wire [127:0] w_insn_data;
@@ -145,8 +145,8 @@ module m_main#(
     wire [31:0] w_pagefault;
     wire  [1:0] w_tlb_req;
     wire        w_tlb_flush;
-    wire        w_init_done;
-    wire        w_init_stage;
+    (* mark_debug *) wire        w_init_done;
+    (* mark_debug *) wire        w_init_stage;
 
     // Reset
     wire RST_X      = ~RST & RST_X2;
@@ -240,8 +240,8 @@ module m_main#(
     wire        w_uart_we;
     wire [31:0] w_checksum;
 
-    wire w_finish;
-    wire w_halt;
+    (* mark_debug *) wire w_finish;
+    (* mark_debug *) wire w_halt;
 
     // stop and count
     always@(posedge CORE_CLK) begin
