@@ -248,6 +248,12 @@ set file "constrs_1/fic_mk2.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 
+set file "[file normalize "$origin_dir/src/constrs_1/fic_mk2_probe.xdc"]"
+set file_added [add_files -norecurse -fileset $obj [list $file]]
+set file "constrs_1/fic_mk2_probe.xdc"
+set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
+set_property -name "file_type" -value "XDC" -objects $file_obj
+
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
 set_property -name "target_part" -value "xcku115-flvb2104-2-e" -objects $obj
