@@ -23,10 +23,10 @@ module sd_controller(
     output wire [ 4:0] o_state,
 
     // sd
-    output reg  cs,
-    output wire mosi,
-    input  wire miso,
-    output wire sclk
+    (* mark_debug *) output reg  cs,
+    (* mark_debug *) output wire mosi,
+    (* mark_debug *) input  wire miso,
+    (* mark_debug *) output wire sclk
 );
 
     // for init

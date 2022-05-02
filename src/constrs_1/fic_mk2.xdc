@@ -35,16 +35,29 @@ set_property -dict {PACKAGE_PIN E40 IOSTANDARD LVCMOS18} [get_ports uart_rx]
 set_property IOSTANDARD DIFF_SSTL12_DCI [get_ports c0_sys_clk_p]
 set_property IOSTANDARD DIFF_SSTL12_DCI [get_ports c0_sys_clk_n]
 
-set_property -dict {PACKAGE_PIN A37 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
-set_property -dict {PACKAGE_PIN C36 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
-set_property -dict {PACKAGE_PIN D38 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
-set_property -dict {PACKAGE_PIN A40 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
-set_property -dict {PACKAGE_PIN B36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
-set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
-set_property -dict {PACKAGE_PIN C39 IOSTANDARD LVCMOS18} [get_ports sd_cd]
-set_property -dict {PACKAGE_PIN A39 IOSTANDARD LVCMOS18} [get_ports sd_rst]
+#set_property -dict {PACKAGE_PIN A37 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
+#set_property -dict {PACKAGE_PIN C36 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
+#set_property -dict {PACKAGE_PIN D38 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
+#set_property -dict {PACKAGE_PIN A40 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
+#set_property -dict {PACKAGE_PIN B36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
+#set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
+#set_property -dict {PACKAGE_PIN C39 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+#set_property -dict {PACKAGE_PIN A39 IOSTANDARD LVCMOS18} [get_ports sd_rst]
+#set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports level_conv_oe]
 
-set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports level_conv_oe]
+set_property -dict {PACKAGE_PIN J31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
+set_property -dict {PACKAGE_PIN H32 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
+set_property -dict {PACKAGE_PIN G31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
+set_property -dict {PACKAGE_PIN E33 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
+set_property -dict {PACKAGE_PIN J33 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
+set_property -dict {PACKAGE_PIN H31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
+set_property -dict {PACKAGE_PIN F33 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+set_property -dict {PACKAGE_PIN E32 IOSTANDARD LVCMOS18} [get_ports sd_rst]
+
+set_property -dict {PACKAGE_PIN F32 IOSTANDARD LVCMOS18} [get_ports dir0]
+set_property -dict {PACKAGE_PIN G32 IOSTANDARD LVCMOS18} [get_ports dir1]
+set_property -dict {PACKAGE_PIN H33 IOSTANDARD LVCMOS18} [get_ports dir2]
+set_property -dict {PACKAGE_PIN J30 IOSTANDARD LVCMOS18} [get_ports dir3]
 
 
 # ============ DDR_M0 (Bank 69). ========================================
@@ -219,5 +232,6 @@ set_property PACKAGE_PIN N18 [get_ports {c0_ddr4_cs_n[1]}]
 set_property PACKAGE_PIN P18 [get_ports {c0_ddr4_odt[1]}]
 #	set_property PACKAGE_PIN M17				[get_ports "c0_ddr4_cs_n[2]"		]
 #	set_property PACKAGE_PIN N17				[get_ports "c0_ddr4_cs_n[3]"		]
+
 
 

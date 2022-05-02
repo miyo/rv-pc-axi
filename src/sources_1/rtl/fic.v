@@ -37,13 +37,19 @@ module fic#(
      inout  wire        sd_cmd,
      inout  wire [ 3:0] sd_dat,
 
-     output wire level_conv_oe,
+     output wire dir0,
+     output wire dir1,
+     output wire dir2,
+     output wire dir3,
      
      output wire        led0,
      output wire        led1
      );
 
-    assign level_conv_oe = 1'b1;
+    assign dir0 = 1'b1;
+    assign dir1 = 1'b0;
+    assign dir2 = 1'b1;
+    assign dir3 = 1'b1;
   
     // Clock
     //////////////////////////////////////
