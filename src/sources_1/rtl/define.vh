@@ -14,7 +14,8 @@
 `define CACHE_SIZE (128*1024)
 
 //`define SERIAL_WCNT 15 // 5Mbps for 75MHz(1M baud UART wait count, 8 for 64MHz, 9 for 72MHz)
-`define SERIAL_WCNT 30 // 2.5Mbps for 75MHz(1M baud UART wait count, 8 for 64MHz, 9 for 72MHz)
+//`define SERIAL_WCNT 30 // 2.5Mbps for 75MHz(1M baud UART wait count, 8 for 64MHz, 9 for 72MHz)
+`define SERIAL_WCNT 50 // 1.5Mbps for 75MHz(1M baud UART wait count, 8 for 64MHz, 9 for 72MHz)
 
 `define LINUX
 `define REAL_MTIME
