@@ -16,7 +16,7 @@ if { [info exists ::user_project_name] } {
 }
 
 variable script_file
-set script_file "fic_mk2.tcl"
+set script_file "fic-mk2.tcl"
 
 # Help information for this script
 proc print_help {} {
