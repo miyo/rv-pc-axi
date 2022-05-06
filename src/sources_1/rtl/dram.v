@@ -77,11 +77,7 @@ module DRAM_con_without_cache #(
 
     wire                        dram_ren;
     wire                        dram_wen;
-`ifndef ARTYA7
-    wire [APP_ADDR_WIDTH-2 : 0] dram_addr;
-`else
     wire [APP_ADDR_WIDTH-1 : 0] dram_addr;
-`endif
     wire [APP_DATA_WIDTH-1 : 0] dram_din;
     wire [APP_DATA_WIDTH-1 : 0] dram_dout;
     wire                        dram_dout_valid;
@@ -152,16 +148,12 @@ module DRAM_con_without_cache #(
     assign {dout_afifo1_wr_en, dout_afifo1_addr, dout_afifo1_data, data_mask} = dout_afifo1;
     assign dram_ren = (!empty_afifo1 && !dout_afifo1_wr_en && dram_ready);
     assign dram_wen = (!empty_afifo1 && dout_afifo1_wr_en && dram_ready && dram_wdf_ready);
-`ifndef ARTYA7
-    assign dram_addr = dout_afifo1_addr[26:1];
-    assign dram_din = {{(APP_DATA_WIDTH-32){1'b0}}, dout_afifo1_data};
-`else
+
     assign dram_addr = {2'b0, dout_afifo1_addr[26:4], 3'b0};
     assign dram_din = {4{dout_afifo1_data}};
 
     wire  [3:0] mask_t = ~data_mask;
     wire [15:0] mask_t2 = mask_t << {dout_afifo1_addr[3:2], 2'b0};
-`endif
 
     DRAMController_AXI #(
                      .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
@@ -219,22 +211,14 @@ module DRAM_con_without_cache #(
         // user interface ports
         .i_rd_en(dram_ren),
         .i_wr_en(dram_wen),
-`ifndef ARTYA7
-        .i_addr({1'b0, dram_addr}),
-`else
         .i_addr(dram_addr),
-`endif
         .i_data(dram_din),
         .i_init_calib_complete(dram_init_calib_complete),
         .o_data(dram_dout),
         .o_data_valid(dram_dout_valid),
         .o_ready(dram_ready),
         .o_wdf_ready(dram_wdf_ready),
-`ifndef ARTYA7
-        .i_mask(data_mask));
-`else
         .i_mask(~mask_t2));
-`endif
 
     // state machine
     always @(negedge i_clk) begin

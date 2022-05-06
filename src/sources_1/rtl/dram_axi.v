@@ -62,11 +62,7 @@ module DRAMController_AXI #(
      (* mark_debug *) output wire                         o_data_valid,
      (* mark_debug *) output wire                         o_ready,
      (* mark_debug *) output wire                         o_wdf_ready,
-`ifndef ARTYA7
-     input  wire [3:0]                   i_mask);
-`else
      (* mark_debug *) input  wire [APP_MASK_WIDTH-1 : 0]  i_mask);
-`endif
 
     localparam STATE_CALIB           = 3'b000;
     localparam STATE_IDLE            = 3'b001;
@@ -82,11 +78,7 @@ module DRAMController_AXI #(
 
     (* mark_debug *) reg  [2:0]                  state;
 
-`ifndef ARTYA7
-    reg  [3:0]                  data_mask = 0;
-`else
     reg  [APP_MASK_WIDTH-1 : 0] data_mask = 0;
-`endif
 
     assign o_data = s_axi_rdata;
 

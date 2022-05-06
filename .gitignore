@@ -96,3 +96,9 @@ diskimage/buildroot-*
 diskimage/linux-*
 diskimage/riscv-pk-*
 diskimage/device-tree-compiler
+
+/artya7
+/fic_mk1
+/fic_mk2
+/genesys2
+

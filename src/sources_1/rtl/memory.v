@@ -17,9 +17,6 @@ module DRAM_conRV#(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-`ifdef ARTYA7
-     input  wire                         ref_clk,
-`endif
      // memory interface ports
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
@@ -118,9 +115,6 @@ module DRAM_conRV#(
                .APP_DATA_WIDTH(APP_DATA_WIDTH),
                .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dram (
-`ifdef ARTYA7
-               .ref_clk(ref_clk),
-`endif
                // memory interface ports
 	       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
 	       .s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr
@@ -348,9 +342,6 @@ module DRAM_conX#(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-`ifdef ARTYA7
-     input  wire                         ref_clk,
-`endif
      // memory interface ports
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
@@ -462,9 +453,6 @@ module DRAM_conX#(
                    .APP_DATA_WIDTH(APP_DATA_WIDTH),
                    .APP_MASK_WIDTH(APP_MASK_WIDTH))
     dram (
-`ifdef ARTYA7
-               .ref_clk(ref_clk),
-`endif
                // memory interface ports
 	       .s_axi_awid                     (s_axi_awid),  // input [3:0]			s_axi_awid
 	       .s_axi_awaddr                   (s_axi_awaddr),  // input [27:0]			s_axi_awaddr
@@ -534,9 +522,6 @@ module DRAM_Wrapper2 #(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-`ifdef ARTYA7
-     input  wire                         ref_clk,
-`endif
      // memory interface ports
      output wire [3:0] s_axi_awid,
      output wire [APP_ADDR_WIDTH-1:0] s_axi_awaddr,
