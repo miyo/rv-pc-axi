@@ -1,11 +1,11 @@
 # RV-PC-AXI
 
 RV-PC-AXI is a variation of RV-PC that uses AXI-version MIG. Using AXI makes it is easy to port various FPGA boards.
-This version works on Arty A7-100T.
+This version works on Arty A7-100T, FiC mk1, FiC mk2, and GENESYS2.
 
 ## How to Build
 
-In this project, Vivado 2020.2 is used for Arty A7 and Vivado 2021.2 is used for FiC.
+In this project, Vivado 2020.2 is used for Arty A7 and Vivado 2021.2 is used for the others.
 
 ```bash
 $ vivado -mode batch -source main-arty-a7-100.tcl
