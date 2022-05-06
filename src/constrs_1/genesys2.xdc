@@ -48,6 +48,10 @@ set_property -dict { PACKAGE_PIN V22   IOSTANDARD LVCMOS33 } [get_ports { clk_50
 set_property -dict { PACKAGE_PIN W21   IOSTANDARD LVCMOS33 } [get_ports { w_mdio_phy }]; #IO_L24P_T3_A01_D17_14 Sch=jd[10]
 
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets clk_50mhz_IBUF]
+create_clock -period 20.000 -name clk_50mhz_net -add [get_ports clk_50mhz]
+
+set_false_path -from [get_clocks clk_50mhz_net] -to [get_clocks core_clk_net]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks clk_50mhz_net]
 
 #### This file is a general .xdc for the Genesys 2 Rev. H
 #### To use it in a project:
