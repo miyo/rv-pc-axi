@@ -43,15 +43,14 @@ set_property -dict { PACKAGE_PIN V24   IOSTANDARD LVCMOS33 } [get_ports { w_crs_
 set_property -dict { PACKAGE_PIN W22   IOSTANDARD LVCMOS33 } [get_ports { w_mdc_phy }]; #IO_L24N_T3_A00_D16_14 Sch=jd[4]
 set_property -dict { PACKAGE_PIN U24   IOSTANDARD LVCMOS33 } [get_ports { w_txen_phy }]; #IO_L23P_T3_A03_D19_14 Sch=jd[7]
 set_property -dict { PACKAGE_PIN Y26   IOSTANDARD LVCMOS33 } [get_ports { w_rxd_phy[0] }]; #IO_L1P_T0_13 Sch=jd[8]
-#set_property -dict { PACKAGE_PIN V22   IOSTANDARD LVCMOS33 } [get_ports { w_clkin_phy }]; #IO_L22N_T3_A04_D20_14 Sch=jd[9]
-set_property -dict { PACKAGE_PIN V22   IOSTANDARD LVCMOS33 } [get_ports { clk_50mhz }]; #IO_L22N_T3_A04_D20_14 Sch=jd[9]
+set_property -dict { PACKAGE_PIN V22   IOSTANDARD LVCMOS33 } [get_ports { w_phy_clk }]; #IO_L22N_T3_A04_D20_14 Sch=jd[9]
 set_property -dict { PACKAGE_PIN W21   IOSTANDARD LVCMOS33 } [get_ports { w_mdio_phy }]; #IO_L24P_T3_A01_D17_14 Sch=jd[10]
 
-set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets clk_50mhz_IBUF]
-create_clock -period 20.000 -name clk_50mhz_net -add [get_ports clk_50mhz]
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets w_phy_clk_IBUF]
+create_clock -period 20.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
 
-set_false_path -from [get_clocks clk_50mhz_net] -to [get_clocks core_clk_net]
-set_false_path -from [get_clocks core_clk_net] -to [get_clocks clk_50mhz_net]
+set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks core_clk_net]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks w_phy_clk_net]
 
 #### This file is a general .xdc for the Genesys 2 Rev. H
 #### To use it in a project:

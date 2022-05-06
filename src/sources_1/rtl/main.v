@@ -21,8 +21,8 @@ module m_main#(
 
               input wire CORE_CLK,
               input wire RST_X2,
-              input wire clk_100mhz,
               input wire clk_50mhz,
+              input wire ether_clk,
               input wire pix_clk,
 
               output wire [15:0] w_led,
@@ -257,7 +257,7 @@ module m_main#(
     c(
       .CLK            (CORE_CLK),
       .clk_50mhz      (clk_50mhz),
-      .clk_100mhz     (clk_100mhz),
+      .ether_clk      (ether_clk),
       .RST_X          (RST_X),
       .w_insn_addr    (w_insn_addr),
       .w_data_addr    (w_data_addr),

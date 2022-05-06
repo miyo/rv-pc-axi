@@ -47,10 +47,8 @@ module genesys2#(
      output wire  [1:0] w_txd_phy,
      output wire        w_txen_phy,
      input  wire  [1:0] w_rxd_phy,
-     input wire         clk_50mhz
-
+     input  wire        w_phy_clk
      );
-    assign w_ledx = 4'b1111;
 
     // Clock
     //////////////////////////////////////
@@ -96,10 +94,9 @@ module genesys2#(
     assign RST_X2 = clkgen1_rst_x;
 
     // 50MHz Clock for SD card and Ethernet
-    //wire clk_50mhz;
+    wire clk_50mhz;
     wire w_locked_50mhz;
-    //clk_wiz_2 clkgen2 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(clk_50mhz), .locked(w_locked_50mhz));
-    assign w_locked_50mhz = 1'b1;
+    clk_wiz_2 clkgen2 (.clk_in1(CLK), .resetn(RST_X_IN), .clk_out1(clk_50mhz), .locked(w_locked_50mhz));
 
     wire pix_clk;
     wire clk_100mhz = CLK;
@@ -153,6 +150,9 @@ module genesys2#(
     (* mark_debug *) wire dram_init_calib_complete;
     (* mark_debug *) wire calib_done;
 
+    wire [7:0] w_led;
+    assign w_ledx = w_led[3:0];
+
     m_main#(
             .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
 	    .APP_CMD_WIDTH(APP_CMD_WIDTH),
@@ -167,11 +167,11 @@ module genesys2#(
 
       .CORE_CLK(CORE_CLK),
       .RST_X2(RST_X2),
-      .clk_100mhz(clk_100mhz),
       .clk_50mhz(clk_50mhz),
+      .ether_clk(w_phy_clk),
       .pix_clk(pix_clk),
 
-      .w_led(),
+      .w_led(w_led),
       .r_sg(),
       .r_an(),
 

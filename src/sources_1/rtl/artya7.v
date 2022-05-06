@@ -186,8 +186,8 @@ module artya7#(
 
       .CORE_CLK(CORE_CLK),
       .RST_X2(RST_X2),
-      .clk_100mhz(clk_100mhz),
       .clk_50mhz(clk_50mhz),
+      .ether_clk(clk_50mhz),
       .pix_clk(pix_clk),
 
       .w_led(w_led),

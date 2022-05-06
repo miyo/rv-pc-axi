@@ -13,7 +13,10 @@ module m_mmu#(
               parameter APP_DATA_WIDTH  = 128,  // Note
               parameter APP_MASK_WIDTH  = 16)
     (
-    input  wire         CLK, clk_50mhz, clk_100mhz, RST_X,
+    input  wire         CLK,
+    input  wire         clk_50mhz,
+    input  wire         ether_clk,
+    input  wire         RST_X,
     input  wire [31:0]  w_insn_addr, w_data_addr,
     input  wire [31:0]  w_data_wdata,
     input  wire         w_data_we,
@@ -819,7 +822,7 @@ module m_mmu#(
                         w_disk_irq, w_disk_irq_oe, r_mc_mode, w_disk_req, w_disk_qnum, w_disk_qsel);
 
 
-    m_ether     ether(CLK, clk_50mhz, RST_X, w_ether_we, w_ether_addr, w_mem_wdata, plic_pending_irq, w_ether_data,
+    m_ether     ether(CLK, ether_clk, RST_X, w_ether_we, w_ether_addr, w_mem_wdata, plic_pending_irq, w_ether_data,
                         w_ether_irq, w_ether_irq_oe, r_mc_mode, w_ether_send_req, w_ether_recv_req, w_ether_qnum, w_ether_qsel,
                         w_crs_dv_phy, w_txd_phy, w_txen_phy, w_rxd_phy, w_rxerr_phy, w_clkin_phy, w_mtime, w_init_stage, plic_ether_en);
 
