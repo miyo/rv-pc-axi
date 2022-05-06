@@ -16,7 +16,7 @@ if { [info exists ::user_project_name] } {
 }
 
 variable script_file
-set script_file "main-arty-a7-100.tcl"
+set script_file "arty-a7-100.tcl"
 
 # Help information for this script
 proc print_help {} {
@@ -102,7 +102,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 set obj [get_filesets sources_1]
 # Add local files from the original project (-no_copy_sources specified)
 set files [list \
- [file normalize "${origin_dir}/src/sources_1/ip/clk_wiz_1/clk_wiz_1.xci" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/clk_wiz_1/clk_wiz_1.xci" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/define.vh" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/VGA.v" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/console.v" ]\
@@ -123,8 +123,8 @@ set files [list \
  [file normalize "${origin_dir}/src/sources_1/rtl/sdcram.v" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/main.v" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/artya7.v" ]\
- [file normalize "${origin_dir}/src/sources_1/ip/mig_7series_0_axi/mig_a.prj" ]\
- [file normalize "${origin_dir}/src/sources_1/ip/mig_7series_0_axi/mig_b.prj" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/mig_7series_0_axi/mig_a.prj" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/mig_7series_0_axi/mig_b.prj" ]\
  [file normalize "${origin_dir}/src/sources_1/rtl/top.v" ]\
  [file normalize "${origin_dir}/ucimage/ucimage.mem" ]\
 ]
@@ -134,7 +134,7 @@ set added_files [add_files -fileset sources_1 $files]
 # None
 
 # Set 'sources_1' fileset file properties for local files
-set file "clk_wiz_1/clk_wiz_1.xci"
+set file "artya7/clk_wiz_1/clk_wiz_1.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -165,7 +165,7 @@ set_property -name "top_auto_set" -value "0" -objects $obj
 set obj [get_filesets sources_1]
 # Add local files from the original project (-no_copy_sources specified)
 set files [list \
- [file normalize "${origin_dir}/src/sources_1/ip/clk_wiz_0_arty/clk_wiz_0.xci" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/clk_wiz_0_arty/clk_wiz_0.xci" ]\
 ]
 set added_files [add_files -fileset sources_1 $files]
 
@@ -173,7 +173,7 @@ set added_files [add_files -fileset sources_1 $files]
 # None
 
 # Set 'sources_1' fileset file properties for local files
-set file "clk_wiz_0_arty/clk_wiz_0.xci"
+set file "artya7/clk_wiz_0_arty/clk_wiz_0.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -186,7 +186,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Add local files from the original project (-no_copy_sources specified)
 set files [list \
- [file normalize "${origin_dir}/src/sources_1/ip/mig_7series_0_axi/mig_7series_0_axi.xci" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/mig_7series_0_axi/mig_7series_0_axi.xci" ]\
 ]
 set added_files [add_files -fileset sources_1 $files]
 
@@ -194,7 +194,7 @@ set added_files [add_files -fileset sources_1 $files]
 # None
 
 # Set 'sources_1' fileset file properties for local files
-set file "mig_7series_0_axi/mig_7series_0_axi.xci"
+set file "artya7/mig_7series_0_axi/mig_7series_0_axi.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -207,7 +207,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Add local files from the original project (-no_copy_sources specified)
 set files [list \
- [file normalize "${origin_dir}/src/sources_1/ip/clk_wiz_2/clk_wiz_2.xci" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/clk_wiz_2/clk_wiz_2.xci" ]\
 ]
 set added_files [add_files -fileset sources_1 $files]
 
@@ -215,7 +215,7 @@ set added_files [add_files -fileset sources_1 $files]
 # None
 
 # Set 'sources_1' fileset file properties for local files
-set file "clk_wiz_2/clk_wiz_2.xci"
+set file "artya7/clk_wiz_2/clk_wiz_2.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -228,7 +228,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Add local files from the original project (-no_copy_sources specified)
 set files [list \
- [file normalize "${origin_dir}/src/sources_1/ip/clk_wiz_3/clk_wiz_3.xci" ]\
+ [file normalize "${origin_dir}/src/sources_1/ip/artya7/clk_wiz_3/clk_wiz_3.xci" ]\
 ]
 set added_files [add_files -fileset sources_1 $files]
 
@@ -236,7 +236,7 @@ set added_files [add_files -fileset sources_1 $files]
 # None
 
 # Set 'sources_1' fileset file properties for local files
-set file "clk_wiz_3/clk_wiz_3.xci"
+set file "artya7/clk_wiz_3/clk_wiz_3.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
