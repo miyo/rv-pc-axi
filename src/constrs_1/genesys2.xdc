@@ -14,17 +14,26 @@ set_property -dict {PACKAGE_PIN V20 IOSTANDARD LVCMOS33} [get_ports w_led1_B]
 set_property -dict {PACKAGE_PIN V26 IOSTANDARD LVCMOS33} [get_ports w_led1_G]
 set_property -dict {PACKAGE_PIN W24 IOSTANDARD LVCMOS33} [get_ports w_led1_R]
 
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets m_clkgen0/inst/clk_in1_clk_wiz_0]
+
+create_clock -period 9.615 -name core_clk_net -add [get_nets CORE_CLK]
+create_clock -period 9.615 -name mmu_clk_net -add [get_nets c/CLK]
+
+#set_false_path -from [get_clocks core_clk_net] -to [get_clocks -of_objects [get_pins c/dram_con/dram/dram/dram_con_witout_cache/dc/u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
+#set_false_path -from [get_clocks -of_objects [get_pins c/dram_con/dram/dram/dram_con_witout_cache/dc/u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks core_clk_net]
+
 create_generated_clock -name mig_in_clk [get_pins m_clkgen0/inst/mmcm_adv_inst/CLKOUT0]
 set_clock_groups -asynchronous -group {mig_in_clk}
 
+#create_generated_clock -name core_clk [get_pins mem_ctrl/dram_con/dram/dram/dram_con_witout_cache/clkgen1/inst/mmcm_adv_inst/CLKOUT0]
 create_generated_clock -name core_clk [get_pins clkgen1/inst/mmcm_adv_inst/CLKOUT0]
 set_clock_groups -asynchronous -group {core_clk}
 
-set_false_path -from [get_clocks -of_objects [get_nets CORE_CLK]] -to [get_clocks -of_objects [get_pins clkgen2/inst/mmcm_adv_inst/CLKOUT0]]
-set_false_path -from [get_clocks -of_objects [get_pins clkgen2/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks -of_objects [get_nets CORE_CLK]]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks -of_objects [get_pins clkgen2/inst/mmcm_adv_inst/CLKOUT0]]
+set_false_path -from [get_clocks -of_objects [get_pins clkgen2/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks core_clk_net]
 
-set_false_path -from [get_clocks -of_objects [get_nets CORE_CLK]] -to [get_clocks -of_objects [get_pins u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
-set_false_path -from [get_clocks -of_objects [get_pins u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks -of_objects [get_nets CORE_CLK]]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks -of_objects [get_pins u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
+set_false_path -from [get_clocks -of_objects [get_pins u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks core_clk_net]
 set_false_path -from [get_clocks clk_p_pin] -to [get_clocks -of_objects [get_pins u_mig_7series_0_axi/u_mig_7series_0_axi_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
 
 set_property -dict { PACKAGE_PIN AC26  IOSTANDARD LVCMOS33 } [get_ports { w_txd_phy[1] }]; #IO_L19P_T3_13 Sch=jc[1]
@@ -40,8 +49,8 @@ set_property -dict { PACKAGE_PIN W21   IOSTANDARD LVCMOS33 } [get_ports { w_mdio
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets w_phy_clk_IBUF]
 create_clock -period 20.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
 
-set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks -of_objects [get_nets CORE_CLK]]
-set_false_path -from [get_clocks -of_objects [get_nets CORE_CLK]] -to [get_clocks w_phy_clk_net]
+set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks core_clk_net]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks w_phy_clk_net]
 
 #### This file is a general .xdc for the Genesys 2 Rev. H
 #### To use it in a project:
