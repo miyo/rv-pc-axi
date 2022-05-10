@@ -5,14 +5,18 @@ This version works on Arty A7-100T, FiC mk1, FiC mk2, and GENESYS2.
 
 ## How to Build
 
-In this project, Vivado 2020.2 is used for Arty A7 and Vivado 2021.2 is used for the others.
+In this project, Vivado 2021.2 is used.
+
+To build each bit-file, generate Vivado project at first by using TCL script.
+
+For example, 
 
 ```bash
-$ vivado -mode batch -source main-arty-a7-100.tcl
+$ vivado -mode batch -source arty-a7-100.tcl
 ```
-or by selecting main.tcl in Tools -> Run Tcl Script in Vivado GUI.
+or by selecting `arty-a7-100.tcl` in Tools -> Run Tcl Script in Vivado GUI.
 
-Then open main/main.xpr with Vivado, and Click `Generate Bitstream` in Flow Navigator. You can get `artya7.bit`.
+Then open the generated xpr file under the generated directory with Vivado, and Click `Generate Bitstream` in Flow Navigator. You can get bit-file.
 
 
 # RV-PC
