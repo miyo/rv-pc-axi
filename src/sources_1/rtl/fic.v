@@ -47,8 +47,8 @@ module fic#(
      );
 
     assign dir0 = 1'b1;
-    assign dir1 = 1'b0;
-    assign dir2 = 1'b1;
+    assign dir1 = 1'b1;
+    assign dir2 = 1'b0;
     assign dir3 = 1'b1;
   
     // Clock
