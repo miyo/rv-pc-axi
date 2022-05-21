@@ -73,6 +73,28 @@ set_property -dict {PACKAGE_PIN A33 IOSTANDARD LVCMOS18} [get_ports dir2]
 set_property -dict {PACKAGE_PIN D33 IOSTANDARD LVCMOS18} [get_ports dir3]
 
 
+set_property -dict { PACKAGE_PIN B34 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[1] }]; #IO_L19P_T3_13 Sch=jc[1]
+set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[0] }]; #IO_L16N_T2_A15_D31_14 Sch=jd[1]
+set_property -dict { PACKAGE_PIN B37 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[1] }]; #IO_L8P_T1_13 Sch=jd[2]
+set_property -dict { PACKAGE_PIN A37 IOSTANDARD LVCMOS18 } [get_ports { w_crs_dv_phy }]; #IO_L23N_T3_A02_D18_14 Sch=jd[3]
+set_property -dict { PACKAGE_PIN C37 IOSTANDARD LVCMOS18 } [get_ports { w_mdc_phy }]; #IO_L24N_T3_A00_D16_14 Sch=jd[4]
+set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { w_txen_phy }]; #IO_L23P_T3_A03_D19_14 Sch=jd[7]
+set_property -dict { PACKAGE_PIN B36 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[0] }]; #IO_L1P_T0_13 Sch=jd[8]
+set_property -dict { PACKAGE_PIN D36 IOSTANDARD LVCMOS18 } [get_ports { w_phy_clk }]; #IO_L22N_T3_A04_D20_14 Sch=jd[9]
+set_property -dict { PACKAGE_PIN C36 IOSTANDARD LVCMOS18 } [get_ports { w_mdio_phy }]; #IO_L24P_T3_A01_D17_14 Sch=jd[10]
+
+set_property -dict {PACKAGE_PIN A34 IOSTANDARD LVCMOS18} [get_ports dir4]
+set_property -dict {PACKAGE_PIN D35 IOSTANDARD LVCMOS18} [get_ports dir5]
+set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports dir6]
+set_property -dict {PACKAGE_PIN A38 IOSTANDARD LVCMOS18} [get_ports dir7]
+set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports dir8]
+
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets w_phy_clk_IBUF]
+create_clock -period 20.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
+
+set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks core_clk_net]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks w_phy_clk_net]
+
 # ============ DDR_M0 (Bank 69). ========================================
 #	set_property PACKAGE_PIN C17				[get_ports ""				]
 set_property PACKAGE_PIN A17 [get_ports {c0_ddr4_dq[2]}]

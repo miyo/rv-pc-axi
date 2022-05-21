@@ -36,20 +36,39 @@ module fic#(
      output wire        sd_sclk,
      inout  wire        sd_cmd,
      inout  wire [ 3:0] sd_dat,
+     
+     output wire        w_mdio_phy,
+     output wire        w_mdc_phy,
+     input  wire        w_crs_dv_phy,
+     output wire  [1:0] w_txd_phy,
+     output wire        w_txen_phy,
+     input  wire  [1:0] w_rxd_phy,
+     input  wire        w_phy_clk,
 
      output wire dir0,
      output wire dir1,
      output wire dir2,
      output wire dir3,
-     
+     output wire dir4,
+     output wire dir5,
+     output wire dir6,
+     output wire dir7,
+     output wire dir8,
+
      output wire        led0,
      output wire        led1
      );
 
     assign dir0 = 1'b1;
     assign dir1 = 1'b1;
-    assign dir2 = 1'b0;
+    assign dir2 = 1'b0; // sd_dat[0](miso), sd_cd
     assign dir3 = 1'b1;
+
+    assign dir4 = 1'b1; // w_txd_phy[1]
+    assign dir5 = 1'b1; // w_txd_phy[0], w_txen_phy
+    assign dir6 = 1'b0; // w_rxd_phy[1:0]
+    assign dir7 = 1'b0; // w_crs_dv_phy, w_phy_clk
+    assign dir8 = 1'b1; // w_mdc_phy, w_mdio_phy
   
     // Clock
     //////////////////////////////////////
@@ -179,7 +198,7 @@ module fic#(
       .CORE_CLK(CORE_CLK),
       .RST_X2(RST_X2),
       .clk_50mhz(clk_50mhz),
-      .ether_clk(clk_50mhz),
+      .ether_clk(w_phy_clk),
       .pix_clk(pix_clk),
 
       .w_led(),
@@ -241,13 +260,13 @@ module fic#(
       .w_btnl(1'b0),
       .w_btnr(1'b0),
       .w_btnc(1'b0),
-      .w_mdio_phy(),
-      .r_mdc_phy(),
+      .w_mdio_phy(w_mdio_phy),
+      .r_mdc_phy(w_mdc_phy),
       .r_rstn_phy(),
-      .w_crs_dv_phy(1'b0),
-      .w_txd_phy(),
-      .w_txen_phy(),
-      .w_rxd_phy(2'b00),
+      .w_crs_dv_phy(w_crs_dv_phy),
+      .w_txd_phy(w_txd_phy),
+      .w_txen_phy(w_txen_phy),
+      .w_rxd_phy(w_rxd_phy),
       .w_rxerr_phy(1'b0),
       .w_clkin_phy(),
       .sd_cd(sd_cd),
