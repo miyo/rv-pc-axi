@@ -6,7 +6,7 @@
 /**************************************************************************************************/
 `include "define.vh"
 
-`define MAC_ADDR 48'haabbccddeeff
+`define MAC_ADDR 48'h00aabbccddee
 
 `define ETHER_REG_BASE            32'h4000d800
 `define ETHER_REG_SEND_BUSY       5'h0
@@ -98,8 +98,8 @@ module m_ether(CLK, clk_50mhz, RST_X, w_we, w_addr_t, w_idata, w_iirq, w_odata,
 
 
 
-    wire[11:0] w_send_buf_addr;
-    wire[7:0]  send_buf_data;
+    (* mark_debug *) wire[11:0] w_send_buf_addr;
+    (* mark_debug *) wire[7:0]  send_buf_data;
 
     xilinx_simple_dual_port_2_clock_ram #(
     .RAM_WIDTH(8),                       // Specify RAM data width
@@ -120,10 +120,10 @@ module m_ether(CLK, clk_50mhz, RST_X, w_we, w_addr_t, w_idata, w_iirq, w_odata,
     );
 
 
-    reg  [7:0] recv_buf_wdata;
-    wire [7:0] recv_buf_rdata;
-    reg [11:0] recv_addr = 0;
-    reg recv_buf_we      = 0;
+    (* mark_debug *) reg  [7:0] recv_buf_wdata;
+    (* mark_debug *) wire [7:0] recv_buf_rdata;
+    (* mark_debug *) reg [11:0] recv_addr = 0;
+    (* mark_debug *) reg recv_buf_we      = 0;
 
 
     xilinx_simple_dual_port_2_clock_ram #(
@@ -399,14 +399,14 @@ endmodule // Ether
 module ether_send (rst, clk_50mhz, crs_dv_phy, buf_data, txen_mac, buf_len, txd_phy, buf_addr, txen_phy, ready);
     input wire rst;
     input wire clk_50mhz;
-    input wire crs_dv_phy;
-    input wire[7:0] buf_data;
-    input wire txen_mac;
-    input wire[11:0] buf_len;
-    output wire[1:0] txd_phy;
-    output reg[11:0] buf_addr;
-    output reg txen_phy = 0;
-    output wire ready;
+    (* mark_debug *) input wire crs_dv_phy;
+    (* mark_debug *) input wire[7:0] buf_data;
+    (* mark_debug *) input wire txen_mac;
+    (* mark_debug *) input wire[11:0] buf_len;
+    (* mark_debug *) output wire[1:0] txd_phy;
+    (* mark_debug *) output reg[11:0] buf_addr;
+    (* mark_debug *) output reg txen_phy = 0;
+    (* mark_debug *) output wire ready;
 
     reg[2:0] bit_cnt = 0;
     reg[7:0] buffer;
@@ -481,12 +481,12 @@ endmodule
 module ether_recv(rst, clk_50mhz, rxd_phy, crs_dv_phy, rxerr_phy, data, dv, done);
     input  wire        rst;
     input  wire        clk_50mhz;
-    input  wire  [1:0] rxd_phy;
-    input  wire        crs_dv_phy;
-    input  wire        rxerr_phy;
-    output wire  [7:0] data;
-    output reg         dv = 0;      //data valid
-    output reg         done = 0;
+    (* mark_debug *) input  wire  [1:0] rxd_phy;
+    (* mark_debug *) input  wire        crs_dv_phy;
+    (* mark_debug *) input  wire        rxerr_phy;
+    (* mark_debug *) output wire  [7:0] data;
+    (* mark_debug *) output reg         dv = 0;      //data valid
+    (* mark_debug *) output reg         done = 0;
 
     parameter STATE_IDLE = 3'b0, STATE_RECV1 = 3'b1, STATE_RECV2 = 3'b10;
 
