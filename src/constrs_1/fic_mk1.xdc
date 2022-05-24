@@ -57,20 +57,64 @@ set_property IOSTANDARD DIFF_SSTL12_DCI [get_ports c0_sys_clk_n]
 #set_property -dict {PACKAGE_PIN A39 IOSTANDARD LVCMOS18} [get_ports sd_rst]
 #set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports level_conv_oe]
 
-set_property -dict {PACKAGE_PIN J31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
-set_property -dict {PACKAGE_PIN H32 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
-set_property -dict {PACKAGE_PIN G31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
-set_property -dict {PACKAGE_PIN E33 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
-set_property -dict {PACKAGE_PIN J33 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
-set_property -dict {PACKAGE_PIN H31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
-set_property -dict {PACKAGE_PIN F33 IOSTANDARD LVCMOS18} [get_ports sd_cd]
-set_property -dict {PACKAGE_PIN E32 IOSTANDARD LVCMOS18} [get_ports sd_rst]
+#set_property -dict {PACKAGE_PIN J31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
+#set_property -dict {PACKAGE_PIN H32 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
+#set_property -dict {PACKAGE_PIN G31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
+#set_property -dict {PACKAGE_PIN E33 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
+#set_property -dict {PACKAGE_PIN J33 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
+#set_property -dict {PACKAGE_PIN H31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
+#set_property -dict {PACKAGE_PIN F33 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+#set_property -dict {PACKAGE_PIN E32 IOSTANDARD LVCMOS18} [get_ports sd_rst]
 
-set_property -dict {PACKAGE_PIN F32 IOSTANDARD LVCMOS18} [get_ports dir0]
-set_property -dict {PACKAGE_PIN G32 IOSTANDARD LVCMOS18} [get_ports dir1]
-set_property -dict {PACKAGE_PIN H33 IOSTANDARD LVCMOS18} [get_ports dir2]
-set_property -dict {PACKAGE_PIN J30 IOSTANDARD LVCMOS18} [get_ports dir3]
+set_property -dict {PACKAGE_PIN G35 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}]
+set_property -dict {PACKAGE_PIN B32 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
+set_property -dict {PACKAGE_PIN A32 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
+set_property -dict {PACKAGE_PIN C34 IOSTANDARD LVCMOS18} [get_ports sd_sclk]
+set_property -dict {PACKAGE_PIN C31 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
+set_property -dict {PACKAGE_PIN C32 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
+set_property -dict {PACKAGE_PIN C33 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+set_property -dict {PACKAGE_PIN D34 IOSTANDARD LVCMOS18} [get_ports sd_rst]
 
+#set_property -dict {PACKAGE_PIN F32 IOSTANDARD LVCMOS18} [get_ports dir0]
+#set_property -dict {PACKAGE_PIN G32 IOSTANDARD LVCMOS18} [get_ports dir1]
+#set_property -dict {PACKAGE_PIN H33 IOSTANDARD LVCMOS18} [get_ports dir2]
+#set_property -dict {PACKAGE_PIN J30 IOSTANDARD LVCMOS18} [get_ports dir3]
+set_property -dict {PACKAGE_PIN B31 IOSTANDARD LVCMOS18} [get_ports dir0]
+set_property -dict {PACKAGE_PIN D31 IOSTANDARD LVCMOS18} [get_ports dir1]
+set_property -dict {PACKAGE_PIN A33 IOSTANDARD LVCMOS18} [get_ports dir2]
+set_property -dict {PACKAGE_PIN D33 IOSTANDARD LVCMOS18} [get_ports dir3]
+
+
+set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[0] }];
+set_property -dict { PACKAGE_PIN B37 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[1] }];
+set_property -dict { PACKAGE_PIN A37 IOSTANDARD LVCMOS18 } [get_ports { w_crs_dv_phy }];
+set_property -dict { PACKAGE_PIN C37 IOSTANDARD LVCMOS18 } [get_ports { w_mdc_phy }];
+
+set_property -dict { PACKAGE_PIN E37 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[1] }];
+set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { w_txen_phy }];
+set_property -dict { PACKAGE_PIN B36 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[0] }];
+set_property -dict { PACKAGE_PIN D36 IOSTANDARD LVCMOS18 } [get_ports { w_phy_clk }];
+set_property -dict { PACKAGE_PIN C36 IOSTANDARD LVCMOS18 } [get_ports { w_mdio_phy }];
+
+set_property -dict {PACKAGE_PIN A34 IOSTANDARD LVCMOS18} [get_ports dir4]
+set_property -dict {PACKAGE_PIN D35 IOSTANDARD LVCMOS18} [get_ports dir5]
+set_property -dict {PACKAGE_PIN B35 IOSTANDARD LVCMOS18} [get_ports dir6]
+set_property -dict {PACKAGE_PIN A38 IOSTANDARD LVCMOS18} [get_ports dir7]
+set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports dir8]
+
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets w_phy_clk_IBUF]
+create_clock -period 18.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
+
+set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks core_clk_net]
+set_false_path -from [get_clocks core_clk_net] -to [get_clocks w_phy_clk_net]
+
+set_input_delay -clock w_phy_clk_net -max 4.000 [get_ports { w_rxd_phy[0] }];
+set_input_delay -clock w_phy_clk_net -max 4.000 [get_ports { w_rxd_phy[1] }];
+set_input_delay -clock w_phy_clk_net -max 4.000 [get_ports { w_crs_dv_phy }];
+
+set_output_delay -clock w_phy_clk_net -max 1.000 [get_ports { w_txd_phy[0] }];
+set_output_delay -clock w_phy_clk_net -max 1.000 [get_ports { w_txd_phy[1] }];
+set_output_delay -clock w_phy_clk_net -max 1.000 [get_ports { w_txen_phy }];
 
 # ============ DDR_M0 (Bank 69). ========================================
 #	set_property PACKAGE_PIN C17				[get_ports ""						]
