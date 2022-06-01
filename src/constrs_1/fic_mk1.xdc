@@ -39,8 +39,8 @@ create_clock -period 100.000 [get_ports FGCK_P]
 set_property -dict {PACKAGE_PIN AN24 IOSTANDARD LVCMOS33} [get_ports led0]
 set_property -dict {PACKAGE_PIN AP23 IOSTANDARD LVCMOS33} [get_ports led1]
 
-set_property -dict {PACKAGE_PIN D40 IOSTANDARD LVCMOS18} [get_ports uart_tx]
-set_property -dict {PACKAGE_PIN E40 IOSTANDARD LVCMOS18} [get_ports uart_rx]
+set_property -dict {PACKAGE_PIN E40 IOSTANDARD LVCMOS18} [get_ports uart_tx]
+set_property -dict {PACKAGE_PIN D40 IOSTANDARD LVCMOS18} [get_ports uart_rx]
 
 #Pin LOC constraints for the status signals init_calib_complete and data_compare_error
 
@@ -85,13 +85,13 @@ set_property -dict {PACKAGE_PIN A33 IOSTANDARD LVCMOS18} [get_ports dir2]
 set_property -dict {PACKAGE_PIN D33 IOSTANDARD LVCMOS18} [get_ports dir3]
 
 
-set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[0] }];
+set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { r_txd_phy[0] }];
 set_property -dict { PACKAGE_PIN B37 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[1] }];
 set_property -dict { PACKAGE_PIN A37 IOSTANDARD LVCMOS18 } [get_ports { w_crs_dv_phy }];
 set_property -dict { PACKAGE_PIN C37 IOSTANDARD LVCMOS18 } [get_ports { w_mdc_phy }];
 
-set_property -dict { PACKAGE_PIN E37 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[1] }];
-set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { w_txen_phy }];
+set_property -dict { PACKAGE_PIN E37 IOSTANDARD LVCMOS18 } [get_ports { r_txd_phy[1] }];
+set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { r_txen_phy }];
 set_property -dict { PACKAGE_PIN B36 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[0] }];
 set_property -dict { PACKAGE_PIN D36 IOSTANDARD LVCMOS18 } [get_ports { w_phy_clk }];
 set_property -dict { PACKAGE_PIN C36 IOSTANDARD LVCMOS18 } [get_ports { w_mdio_phy }];

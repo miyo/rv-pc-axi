@@ -73,13 +73,13 @@ set_property -dict {PACKAGE_PIN A33 IOSTANDARD LVCMOS18} [get_ports dir2]
 set_property -dict {PACKAGE_PIN D33 IOSTANDARD LVCMOS18} [get_ports dir3]
 
 
-set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[0] }];
+set_property -dict { PACKAGE_PIN E35 IOSTANDARD LVCMOS18 } [get_ports { r_txd_phy[0] }];
 set_property -dict { PACKAGE_PIN B37 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[1] }];
 set_property -dict { PACKAGE_PIN A37 IOSTANDARD LVCMOS18 } [get_ports { w_crs_dv_phy }];
 set_property -dict { PACKAGE_PIN C37 IOSTANDARD LVCMOS18 } [get_ports { w_mdc_phy }];
 
-set_property -dict { PACKAGE_PIN E37 IOSTANDARD LVCMOS18 } [get_ports { w_txd_phy[1] }];
-set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { w_txen_phy }];
+set_property -dict { PACKAGE_PIN E37 IOSTANDARD LVCMOS18 } [get_ports { r_txd_phy[1] }];
+set_property -dict { PACKAGE_PIN A35 IOSTANDARD LVCMOS18 } [get_ports { r_txen_phy }];
 set_property -dict { PACKAGE_PIN B36 IOSTANDARD LVCMOS18 } [get_ports { w_rxd_phy[0] }];
 set_property -dict { PACKAGE_PIN D36 IOSTANDARD LVCMOS18 } [get_ports { w_phy_clk }];
 set_property -dict { PACKAGE_PIN C36 IOSTANDARD LVCMOS18 } [get_ports { w_mdio_phy }];
@@ -91,10 +91,14 @@ set_property -dict {PACKAGE_PIN A38 IOSTANDARD LVCMOS18} [get_ports dir7]
 set_property -dict {PACKAGE_PIN E36 IOSTANDARD LVCMOS18} [get_ports dir8]
 
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets w_phy_clk_IBUF]
-create_clock -period 18.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets {<const0>}]
+
+create_clock -period 20.000 -name w_phy_clk_net -add [get_ports w_phy_clk]
 
 set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks core_clk_net]
 set_false_path -from [get_clocks core_clk_net] -to [get_clocks w_phy_clk_net]
+set_false_path -from [get_clocks w_phy_clk_net] -to [get_clocks -of_objects [get_pins clkgen4/inst/mmcme3_adv_inst/CLKOUT0]]
+set_false_path -from [get_clocks -of_objects [get_pins clkgen4/inst/mmcme3_adv_inst/CLKOUT0]] -to [get_clocks w_phy_clk_net]
 
 set_input_delay -clock w_phy_clk_net -max 4.000 [get_ports { w_rxd_phy[0] }];
 set_input_delay -clock w_phy_clk_net -max 4.000 [get_ports { w_rxd_phy[1] }];

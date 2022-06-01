@@ -40,8 +40,8 @@ module fic#(
      output wire        w_mdio_phy,
      output wire        w_mdc_phy,
      input  wire        w_crs_dv_phy,
-     output wire  [1:0] w_txd_phy,
-     output wire        w_txen_phy,
+     output reg  [1:0] r_txd_phy,
+     output reg        r_txen_phy,
      input  wire  [1:0] w_rxd_phy,
      input  wire        w_phy_clk,
 
@@ -128,6 +128,9 @@ module fic#(
     wire clk_100mhz = CLK;
     clk_wiz_3 m_clkgen3 (.clk_in1(clk_100mhz), .reset(1'b0), .clk_out1(pix_clk), .locked());
 
+    //wire w_phy_clk_o;
+    //clk_wiz_4 clkgen4 (.clk_in1(w_phy_clk), .reset(1'b0), .clk_out1(w_phy_clk_o), .locked());
+
     wire RST        = ~w_locked || ~w_locked_50mhz;
     //////////////////////////////////////
 
@@ -182,6 +185,9 @@ module fic#(
 
     assign led0 = w_led1_G;
     assign led1 = w_led1_B | w_led1_R;
+
+    wire [1:0] w_txd_phy;
+    wire w_txen_phy;
 
     m_main#(
             .APP_ADDR_WIDTH(APP_ADDR_WIDTH),
@@ -393,6 +399,10 @@ module fic#(
 		     .c0_ddr4_s_axi_rdata(s_axi_rdata),                // output wire [127 : 0] c0_ddr4_s_axi_rdata
 		     .sys_rst(sys_rst)                                 // input wire sys_rst
 		     );
+    always @(posedge w_phy_clk) begin
+	r_txd_phy <= w_txd_phy;
+	r_txen_phy <= w_txen_phy;
+    end
 
     reg reset = 1'b1;
 
