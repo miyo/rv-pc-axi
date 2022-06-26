@@ -301,20 +301,20 @@ module exstickge#(
 
     // Memory interface ports
     .ddr3_addr                      (ddr3_addr),  // output [13:0]		ddr3_addr
-    .ddr3_ba                        (ddr3_ba),  // output [2:0]		ddr3_ba
-    .ddr3_cas_n                     (ddr3_cas_n),  // output			ddr3_cas_n
+    .ddr3_ba                        (ddr3_ba),    // output [2:0]		ddr3_ba
+    .ddr3_cas_n                     (ddr3_cas_n), // output			ddr3_cas_n
     .ddr3_ck_n                      (ddr3_ck_n),  // output [0:0]		ddr3_ck_n
     .ddr3_ck_p                      (ddr3_ck_p),  // output [0:0]		ddr3_ck_p
-    .ddr3_cke                       (ddr3_cke),  // output [0:0]		ddr3_cke
-    .ddr3_ras_n                     (ddr3_ras_n),  // output			ddr3_ras_n
-    .ddr3_reset_n                   (ddr3_reset_n),  // output			ddr3_reset_n
+    .ddr3_cke                       (ddr3_cke),   // output [0:0]		ddr3_cke
+    .ddr3_ras_n                     (ddr3_ras_n), // output			ddr3_ras_n
+    .ddr3_reset_n                   (ddr3_reset_n), // output			ddr3_reset_n
     .ddr3_we_n                      (ddr3_we_n),  // output			ddr3_we_n
-    .ddr3_dq                        (ddr3_dq),  // inout [15:0]		ddr3_dq
-    .ddr3_dqs_n                     (ddr3_dqs_n),  // inout [1:0]		ddr3_dqs_n
-    .ddr3_dqs_p                     (ddr3_dqs_p),  // inout [1:0]		ddr3_dqs_p
+    .ddr3_dq                        (ddr3_dq),    // inout [7:0]		ddr3_dq
+    .ddr3_dqs_n                     (ddr3_dqs_n), // inout [0:0]		ddr3_dqs_n
+    .ddr3_dqs_p                     (ddr3_dqs_p), // inout [0:0]		ddr3_dqs_p
     .ddr3_cs_n                      (ddr3_cs_n),  // output [0:0]		ddr3_cs_n
-    .ddr3_dm                        (ddr3_dm),  // output [1:0]		ddr3_dm
-    .ddr3_odt                       (ddr3_odt),  // output [0:0]		ddr3_odt
+    .ddr3_dm                        (ddr3_dm),    // output [0:0]		ddr3_dm
+    .ddr3_odt                       (ddr3_odt),   // output [0:0]		ddr3_odt
 
     .init_calib_complete            (dram_init_calib_complete),  // output			init_calib_complete
     // Application interface ports
@@ -374,6 +374,7 @@ module exstickge#(
     .sys_clk_i                      (mig_clk),
     // Reference Clock Ports
     .clk_ref_i                      (ref_clk),
+    .device_temp                    (),
     .sys_rst                        (!RST) // input sys_rst
     );
 
@@ -430,7 +431,7 @@ module exstickge#(
        .s_axi_rvalid(s_axi_rvalid),      // output wire s_axi_rvalid
        .s_axi_rready(s_axi_rready),      // input wire s_axi_rready
 
-       .m_axi_awaddr(s_conv_axi_awaddr[13:0]),      // output wire [31 : 0] m_axi_awaddr
+       .m_axi_awaddr(s_conv_axi_awaddr),      // output wire [31 : 0] m_axi_awaddr
        .m_axi_awlen(s_conv_axi_awlen),        // output wire [7 : 0] m_axi_awlen
        .m_axi_awsize(s_conv_axi_awsize),      // output wire [2 : 0] m_axi_awsize
        .m_axi_awburst(s_conv_axi_awburst),    // output wire [1 : 0] m_axi_awburst
@@ -449,7 +450,7 @@ module exstickge#(
        .m_axi_bresp(s_conv_axi_bresp),        // input wire [1 : 0] m_axi_bresp
        .m_axi_bvalid(s_conv_axi_bvalid),      // input wire m_axi_bvalid
        .m_axi_bready(s_conv_axi_bready),      // output wire m_axi_bready
-       .m_axi_araddr(s_conv_axi_araddr[13:0]), // output wire [31 : 0] m_axi_araddr
+       .m_axi_araddr(s_conv_axi_araddr),      // output wire [31 : 0] m_axi_araddr
        .m_axi_arlen(s_conv_axi_arlen),        // output wire [7 : 0] m_axi_arlen
        .m_axi_arsize(s_conv_axi_arsize),      // output wire [2 : 0] m_axi_arsize
        .m_axi_arburst(s_conv_axi_arburst),    // output wire [1 : 0] m_axi_arburst
@@ -467,8 +468,12 @@ module exstickge#(
        .m_axi_rready(s_conv_axi_rready)       // output wire m_axi_rready
        );
 
-    assign s_conv_axi_awaddr[31:14] = 0;
-    assign s_conv_axi_araddr[31:14] = 0;
+    (* mark_debug *) reg w_rxd_d;
+    (* mark_debug *) reg w_txd_d;
+    always @(posedge clk_50mhz) begin
+	w_rxd_d <= w_rxd;
+	w_txd_d <= w_txd;
+    end
 
 endmodule // exstickge
 

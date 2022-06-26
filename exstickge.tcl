@@ -273,6 +273,12 @@ set file "constrs_1/exstickge.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 
+set file "[file normalize "$origin_dir/src/constrs_1/exstickge_debug.xdc"]"
+set file_added [add_files -norecurse -fileset $obj [list $file]]
+set file "constrs_1/exstickge_debug.xdc"
+set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
+set_property -name "file_type" -value "XDC" -objects $file_obj
+
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
 set_property -name "target_part" -value "xc7a200tsbg484-2" -objects $obj

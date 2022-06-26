@@ -89,6 +89,16 @@ module UartTx(CLK, RST_X, DATA, WE, TXD, READY);
             waitnum   <= waitnum + 1;
         end
     end
+
+    (* mark_debug *) reg WE_d;
+    (* mark_debug *) reg [7:0] DATA_d;
+    always @(posedge CLK) begin
+	WE_d <= WE;
+	if(WE) begin
+	    DATA_d <= DATA;
+	end
+    end
+
 endmodule
 
 /**************************************************************************************************/
@@ -147,6 +157,16 @@ module serialc(CLK, RST_X, rxd, DATA, EN);
             end
         end
     end
+
+    (* mark_debug *) reg EN_d;
+    (* mark_debug *) reg [7:0] DATA_d;
+    always @(posedge CLK) begin
+	EN_d <= EN;
+	if(EN) begin
+	    DATA_d <= DATA;
+	end
+    end
+
 endmodule
 
 module synchronizer(clk, d, q);
